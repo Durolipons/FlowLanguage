@@ -1,16 +1,21 @@
-# Voice generation (Kokoro / Chatterbox)
+# Voice generation (Kokoro / Chatterbox / VoxCPM2)
 
 Generate natural, **commercially-licensed** voice files for every vocabulary
 item, then wire them into the app so lessons play real speech instead of
 on-device TTS.
 
+> Licences verified in `TTS_LICENCE_AUDIT.md`: Kokoro **Apache 2.0**, Chatterbox
+> **MIT**, VoxCPM2 **Apache 2.0** (all GREEN). Piper is 🟡 — GPL-3.0 engine plus
+> per-voice licences; verify each voice. XTTS-v2 was **removed** (non-commercial).
+
 ## Engine choice
 
-| | Kokoro-82M | Chatterbox |
-|---|---|---|
-| License | **Apache 2.0** | **MIT** (output watermarked) |
-| Size / speed | 82M — tiny, fast, CPU-friendly | ~0.5B — GPU ideal |
-| Spanish + French | ✅ built-in voices | ✅ + 20 more languages |
+| | Kokoro-82M | Chatterbox | VoxCPM2 |
+|---|---|---|---|
+| License | **Apache 2.0** | **MIT** (output watermarked) | **Apache 2.0** |
+| Size / speed | 82M — tiny, fast, CPU | ~0.5B — GPU ideal | ~2.3B, 30 langs — GPU |
+| Spanish + French | ✅ built-in voices | ✅ + cloning | ✅ + cloning |
+| Polish | ❌ | ✅ (23 langs) | ✅ (30 langs) |
 | Voice cloning | ❌ (pick a built-in voice) | ✅ clone from a reference clip |
 | Install | `pip install kokoro soundfile misaki[en]` + espeak-ng | `pip install chatterbox-tts` |
 
@@ -38,6 +43,25 @@ npm run register:audio   # rebuild audioAssets.ts from assets/audio/ on disk
 
 - Existing files are skipped unless you pass `--force`.
 - Output: `assets/audio/<lang>/<slug>.wav` (24 kHz).
+
+## Provider layer (`scripts/tts/engines/`)
+
+Generation goes through a provider registry with a fixed fallback chain
+(configured in `engines/config.py`):
+
+```
+VoxCPM2 -> Kokoro -> Chatterbox -> Piper   (Piper last: 🟡, unconfigured = skipped)
+```
+
+- `engines/base.py` — `TtsEngine` interface (`available`, `supports`, `synth`).
+  Heavy imports stay inside methods so the package imports anywhere.
+- `engines/{voxcpm,kokoro,chatterbox,piper}_engine.py` — one provider each.
+- `engines/registry.py` — `synthesize(engine, …)` and `synthesize_with_fallback(…)`.
+- CLI: `--engine voxcpm` (single provider) or `--engine auto` (fallback chain);
+  `kokoro`/`chatterbox` keep their original direct paths. Nothing on the app side
+  changes — the shipped app only plays registered WAVs with on-device-TTS fallback.
+- Piper voices are configured in `config.PIPER_VOICES` **only after** verifying a
+  voice's MODEL_CARD licence is commercial-safe; the dict ships **empty**.
 - After `register:audio`, items with a file play the recording; the rest fall
   back to on-device TTS.
 - Override Kokoro's voice with `--voice` (e.g. `em_alex`, `ef_dora`, `ff_siwis`).

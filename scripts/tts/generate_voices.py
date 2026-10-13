@@ -1,19 +1,26 @@
-r"""Generate natural voice files for vocabulary using Kokoro or Chatterbox.
+r"""Generate natural voice files for vocabulary using Kokoro, Chatterbox or VoxCPM2.
 
-Both are commercially usable:
+Commercially usable only:
   - Kokoro-82M  : Apache 2.0, ~82M params, fast, runs on CPU. Built-in voices.
   - Chatterbox  : MIT, ~0.5B, higher quality, zero-shot voice cloning. GPU ideal.
+  - VoxCPM2     : Apache 2.0, ~2.3B, 30 langs incl. Polish. GPU recommended.
+Try `--engine auto` for the fallback chain (VoxCPM2 -> Kokoro -> Chatterbox
+-> Piper; Piper currently unconfigured, so chain stops at Chatterbox).
 
-Neither supports rare languages (e.g. Shona/Zulu) out of the box -- see README
-for the Piper fine-tuning path for those.
+Polish is NOT covered by Kokoro -- use voxcpm, chatterbox or the fallback chain.
+
+Neither engine except fine-tuned Piper supports rare languages (e.g. Shona/Zulu)
+out of the box -- see README for the Piper fine-tuning path for those.
 
 Requirements:
   Kokoro:      pip install kokoro soundfile misaki[en]   (+ espeak-ng system pkg)
   Chatterbox:  pip install chatterbox-tts
+  VoxCPM2:     pip install voxcpm soundfile
 Model weights download automatically on first run.
 
 Usage:
   npm run tts:manifest      # export texts (run once, and when content changes)
+  python scripts/tts/generate_voices.py --engine auto --lang pl
   python scripts/tts/generate_voices.py --engine kokoro --lang es
   python scripts/tts/generate_voices.py --engine chatterbox --lang fr \
       --speaker voices/fr_ref.wav --gpu
@@ -123,9 +130,50 @@ def gen_chatterbox(lang, items, speaker, gpu, force):
     return done, skipped, failed
 
 
+def gen_registry(engine_or_auto, items, lang, speaker, voice, gpu, force):
+    """Route through the provider registry (fallback chain for "auto").
+
+    `engine_or_auto` is "voxcpm" (single provider) or "auto" (try providers in
+    priority order until one produces audio). The existing gen_kokoro /
+    gen_chatterbox paths are kept untouched for backwards compatibility.
+    """
+    from engines import get, synthesize_with_fallback
+
+    done = skipped = failed = 0
+    used: dict = {}
+    for it in items:
+        text, iid = it["text"], it["id"]
+        path = out_path_for(lang, iid)
+        if os.path.exists(path) and not force:
+            skipped += 1
+            continue
+        try:
+            if engine_or_auto == "auto":
+                used_name = synthesize_with_fallback(
+                    text, lang, path, speaker=speaker, voice=voice, gpu=gpu
+                )
+            else:
+                used_name = engine_or_auto
+                get(engine_or_auto).synth(
+                    text, lang, path, speaker=speaker, voice=voice, gpu=gpu
+                )
+            used[used_name] = used.get(used_name, 0) + 1
+            done += 1
+            print(f"  ok {iid} -> {os.path.relpath(path, ROOT)} [{used_name}]")
+        except Exception as e:
+            failed += 1
+            print(f"  FAIL {iid}: {e}")
+    if used:
+        print("  engines used: " + ", ".join(f"{k}={v}" for k, v in used.items()))
+    return done, skipped, failed
+
+
 def main():
-    ap = argparse.ArgumentParser(description="Generate voice files with Kokoro or Chatterbox.")
-    ap.add_argument("--engine", required=True, choices=["kokoro", "chatterbox"])
+    ap = argparse.ArgumentParser(
+        description="Generate voice files. 'kokoro'/'chatterbox' are direct paths; "
+        "'voxcpm'/'auto' route via the provider registry (fallback chain)."
+    )
+    ap.add_argument("--engine", required=True, choices=["kokoro", "chatterbox", "voxcpm", "auto"])
     ap.add_argument("--lang", required=True, choices=["es", "fr", "pl"])
     ap.add_argument("--voice", help="Kokoro built-in voice (default chosen per language)")
     ap.add_argument("--speaker", help="Chatterbox reference clip (.wav) for voice cloning")
@@ -136,9 +184,14 @@ def main():
     items = load_items(args.lang)
     os.makedirs(os.path.join(ROOT, "assets", "audio", args.lang), exist_ok=True)
     print(f"Engine={args.engine} lang={args.lang} items={len(items)}")
-    if args.engine == "kokoro" and args.lang not in KOKORO:
-        sys.exit(f"Kokoro does not support '{args.lang}'. Use --engine chatterbox, or rely on on-device TTS.")
-    if args.engine == "kokoro":
+    if args.engine in ("voxcpm", "auto"):
+        # Registry path (fallback chain for "auto"). No app-side changes.
+        done, skipped, failed = gen_registry(
+            args.engine, items, args.lang, args.speaker, args.voice, args.gpu, args.force
+        )
+    elif args.engine == "kokoro" and args.lang not in KOKORO:
+        sys.exit(f"Kokoro does not support '{args.lang}'. Use --engine auto, chatterbox or voxcpm, or rely on on-device TTS.")
+    elif args.engine == "kokoro":
         done, skipped, failed = gen_kokoro(args.lang, items, args.voice, args.force)
     else:
         done, skipped, failed = gen_chatterbox(args.lang, items, args.speaker, args.gpu, args.force)
