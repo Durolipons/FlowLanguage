@@ -1,0 +1,79 @@
+/**
+ * Content schema for the language-learning app.
+ *
+ * The design is "data-driven": each language is a `LanguagePack` containing
+ * lexical items and a unit/lesson structure. Exercise instances are generated
+ * automatically from a lesson's items (see `src/content/engine.ts`), so adding
+ * content only requires vocabulary — no per-exercise wiring.
+ */
+
+export type ExerciseType =
+  | 'listen_match' // hear the word -> pick the matching image
+  | 'text_to_image' // see the word -> pick the matching image
+  | 'image_to_text' // see the image -> pick the matching word
+  | 'pronounce' // hear it, then repeat it aloud (speech recognition)
+  | 'build_sentence'; // arrange word tiles into the correct phrase
+
+/** A single word or phrase the learner studies. */
+export interface LexicalItem {
+  id: string;
+  /** Target-language word or phrase. */
+  text: string;
+  /** English meaning (hidden by default — kept for review hints/future use). */
+  translation: string;
+  /** Emoji used as the visual cue (also acts as the "image" for matching). */
+  emoji?: string;
+  /** Optional bundled image asset path (takes priority over emoji when set). */
+  image?: string;
+  /** Optional recorded audio asset path (falls back to TTS when absent). */
+  audio?: string;
+}
+
+/** An explicit step in a lesson (optional; lessons can auto-generate instead). */
+export interface LessonPlanStep {
+  itemId: string;
+  types: ExerciseType[];
+}
+
+export interface Lesson {
+  id: string;
+  title: string;
+  /** Ordered lexical item ids to teach. */
+  itemIds: string[];
+  /** Optional explicit exercise plan; otherwise auto-generated from itemIds. */
+  plan?: LessonPlanStep[];
+}
+
+export interface Unit {
+  id: string;
+  title: string;
+  subtitle?: string;
+  emoji?: string;
+  lessons: Lesson[];
+}
+
+export interface LanguagePack {
+  code: string;
+  /** Name in the target language (e.g. "Español"). */
+  name: string;
+  /** Name in English (e.g. "Spanish"). */
+  englishName: string;
+  /** Flag emoji. */
+  flag: string;
+  /** BCP-47 locale for speech recognition (e.g. "es-ES"). */
+  speechLocale: string;
+  /** Language tag for text-to-speech (e.g. "es-ES"). */
+  ttsLanguage: string;
+  /** All lexical items keyed by id. */
+  items: Record<string, LexicalItem>;
+  units: Unit[];
+}
+
+/** A fully-resolved exercise the player renders. */
+export interface ExerciseInstance {
+  key: string;
+  type: ExerciseType;
+  item: LexicalItem;
+  /** For matching types: the target + distractors, already shuffled. */
+  choices: LexicalItem[];
+}

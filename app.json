@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Lingua",
+    "slug": "language-learning",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "lingua",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.durolipons.lingua",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "We use the microphone to give you pronunciation feedback.",
+        "NSSpeechRecognitionUsageDescription": "We use speech recognition to check your pronunciation."
+      }
+    },
+    "android": {
+      "package": "com.durolipons.lingua",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Allow Lingua to use the microphone for pronunciation practice.",
+          "speechRecognitionPermission": "Allow Lingua to use speech recognition for pronunciation feedback."
+        }
+      ],
+      "expo-status-bar",
+      "expo-sqlite"
+    ]
+  }
+}
