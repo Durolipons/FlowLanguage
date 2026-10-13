@@ -126,7 +126,7 @@ def gen_chatterbox(lang, items, speaker, gpu, force):
 def main():
     ap = argparse.ArgumentParser(description="Generate voice files with Kokoro or Chatterbox.")
     ap.add_argument("--engine", required=True, choices=["kokoro", "chatterbox"])
-    ap.add_argument("--lang", required=True, choices=["es", "fr"])
+    ap.add_argument("--lang", required=True, choices=["es", "fr", "pl"])
     ap.add_argument("--voice", help="Kokoro built-in voice (default chosen per language)")
     ap.add_argument("--speaker", help="Chatterbox reference clip (.wav) for voice cloning")
     ap.add_argument("--gpu", action="store_true", help="use CUDA if available (Chatterbox)")
@@ -136,6 +136,8 @@ def main():
     items = load_items(args.lang)
     os.makedirs(os.path.join(ROOT, "assets", "audio", args.lang), exist_ok=True)
     print(f"Engine={args.engine} lang={args.lang} items={len(items)}")
+    if args.engine == "kokoro" and args.lang not in KOKORO:
+        sys.exit(f"Kokoro does not support '{args.lang}'. Use --engine chatterbox, or rely on on-device TTS.")
     if args.engine == "kokoro":
         done, skipped, failed = gen_kokoro(args.lang, items, args.voice, args.force)
     else:

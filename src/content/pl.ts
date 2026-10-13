@@ -1,0 +1,185 @@
+import type { LanguagePack } from './schema';
+
+export const plPack: LanguagePack = {
+  code: 'pl',
+  name: 'Polski',
+  englishName: 'Polish',
+  flag: '🇵🇱',
+  speechLocale: 'pl-PL',
+  ttsLanguage: 'pl-PL',
+  items: {
+    // Greetings
+    'pl-dzien-dobry': { id: 'pl-dzien-dobry', text: 'dzień dobry', translation: 'good day', emoji: '🌅' },
+    'pl-dobry-wieczor': { id: 'pl-dobry-wieczor', text: 'dobry wieczór', translation: 'good evening', emoji: '🌇' },
+    'pl-dobra-noc': { id: 'pl-dobra-noc', text: 'dobra noc', translation: 'good night', emoji: '🌙' },
+    'pl-czesc': { id: 'pl-czesc', text: 'cześć', translation: 'hi', emoji: '👋' },
+    'pl-do-widzenia': { id: 'pl-do-widzenia', text: 'do widzenia', translation: 'goodbye', emoji: '🚪' },
+    'pl-do-zobaczenia': { id: 'pl-do-zobaczenia', text: 'do zobaczenia', translation: 'see you later', emoji: '✋' },
+    // Polite words
+    'pl-dziekuje': { id: 'pl-dziekuje', text: 'dziękuję', translation: 'thank you', emoji: '🙏' },
+    'pl-prosze': { id: 'pl-prosze', text: 'proszę', translation: 'please', emoji: '🤲' },
+    'pl-przepraszam': { id: 'pl-przepraszam', text: 'przepraszam', translation: 'sorry', emoji: '🙇' },
+    'pl-tak': { id: 'pl-tak', text: 'tak', translation: 'yes', emoji: '✅' },
+    'pl-nie': { id: 'pl-nie', text: 'nie', translation: 'no', emoji: '❌' },
+    'pl-nie-ma-za-co': { id: 'pl-nie-ma-za-co', text: 'nie ma za co', translation: "you're welcome", emoji: '😊' },
+    // Introductions
+    'pl-jak-sie-masz': { id: 'pl-jak-sie-masz', text: 'Jak się masz?', translation: 'how are you?', emoji: '🙂' },
+    'pl-mam-namie': { id: 'pl-mam-namie', text: 'Mam na imię Ana', translation: 'my name is Ana', emoji: '📛' },
+    'pl-milo-mi': { id: 'pl-milo-mi', text: 'Miło mi', translation: 'nice to meet you', emoji: '🤝' },
+    'pl-a-ty': { id: 'pl-a-ty', text: 'A ty?', translation: 'and you?', emoji: '👉' },
+    'pl-dobrze': { id: 'pl-dobrze', text: 'dobrze', translation: 'well', emoji: '👍' },
+    'pl-skad-jestes': { id: 'pl-skad-jestes', text: 'Skąd jesteś?', translation: 'where are you from?', emoji: '🌍' },
+    // Numbers
+    'pl-jeden': { id: 'pl-jeden', text: 'jeden', translation: 'one', emoji: '1️⃣' },
+    'pl-dwa': { id: 'pl-dwa', text: 'dwa', translation: 'two', emoji: '2️⃣' },
+    'pl-trzy': { id: 'pl-trzy', text: 'trzy', translation: 'three', emoji: '3️⃣' },
+    'pl-cztery': { id: 'pl-cztery', text: 'cztery', translation: 'four', emoji: '4️⃣' },
+    'pl-piec': { id: 'pl-piec', text: 'pięć', translation: 'five', emoji: '5️⃣' },
+    'pl-szesc': { id: 'pl-szesc', text: 'sześć', translation: 'six', emoji: '6️⃣' },
+    'pl-siedem': { id: 'pl-siedem', text: 'siedem', translation: 'seven', emoji: '7️⃣' },
+    'pl-osiem': { id: 'pl-osiem', text: 'osiem', translation: 'eight', emoji: '8️⃣' },
+    'pl-dziewiec': { id: 'pl-dziewiec', text: 'dziewięć', translation: 'nine', emoji: '9️⃣' },
+    'pl-dziesiec': { id: 'pl-dziesiec', text: 'dziesięć', translation: 'ten', emoji: '🔟' },
+    // Colors
+    'pl-czerwony': { id: 'pl-czerwony', text: 'czerwony', translation: 'red', emoji: '🟥' },
+    'pl-niebieski': { id: 'pl-niebieski', text: 'niebieski', translation: 'blue', emoji: '🟦' },
+    'pl-zielony': { id: 'pl-zielony', text: 'zielony', translation: 'green', emoji: '🟩' },
+    'pl-zolty': { id: 'pl-zolty', text: 'żółty', translation: 'yellow', emoji: '🟨' },
+    'pl-bialy': { id: 'pl-bialy', text: 'biały', translation: 'white', emoji: '⬜' },
+    'pl-czarny': { id: 'pl-czarny', text: 'czarny', translation: 'black', emoji: '⬛' },
+    'pl-rozowy': { id: 'pl-rozowy', text: 'różowy', translation: 'pink', emoji: '🌸' },
+    'pl-fioletowy': { id: 'pl-fioletowy', text: 'fioletowy', translation: 'purple', emoji: '🟪' },
+    // Food & drink
+    'pl-woda': { id: 'pl-woda', text: 'woda', translation: 'water', emoji: '💧' },
+    'pl-chleb': { id: 'pl-chleb', text: 'chleb', translation: 'bread', emoji: '🍞' },
+    'pl-kawa': { id: 'pl-kawa', text: 'kawa', translation: 'coffee', emoji: '☕' },
+    'pl-mleko': { id: 'pl-mleko', text: 'mleko', translation: 'milk', emoji: '🥛' },
+    'pl-jablko': { id: 'pl-jablko', text: 'jabłko', translation: 'apple', emoji: '🍎' },
+    'pl-jesc': { id: 'pl-jesc', text: 'jeść', translation: 'to eat', emoji: '🍽️' },
+    'pl-pic': { id: 'pl-pic', text: 'pić', translation: 'to drink', emoji: '🥤' },
+    'pl-chce': { id: 'pl-chce', text: 'chcę', translation: 'I want', emoji: '🙋' },
+    // Family
+    'pl-matka': { id: 'pl-matka', text: 'matka', translation: 'mother', emoji: '👩' },
+    'pl-ojciec': { id: 'pl-ojciec', text: 'ojciec', translation: 'father', emoji: '👨' },
+    'pl-brat': { id: 'pl-brat', text: 'brat', translation: 'brother', emoji: '👦' },
+    'pl-siostra': { id: 'pl-siostra', text: 'siostra', translation: 'sister', emoji: '👧' },
+    'pl-syn': { id: 'pl-syn', text: 'syn', translation: 'son', emoji: '👶' },
+    'pl-corka': { id: 'pl-corka', text: 'córka', translation: 'daughter', emoji: '🧒' },
+    'pl-rodzina': { id: 'pl-rodzina', text: 'rodzina', translation: 'the family', emoji: '👨‍👩‍👧‍👦' },
+    'pl-przyjaciel': { id: 'pl-przyjaciel', text: 'przyjaciel', translation: 'friend', emoji: '🧑‍🤝‍🧑' },
+    // Everyday phrases
+    'pl-gdzie-toaleta': { id: 'pl-gdzie-toaleta', text: 'Gdzie jest toaleta?', translation: 'where is the toilet?', emoji: '🚻' },
+    'pl-nie-rozumiem': { id: 'pl-nie-rozumiem', text: 'Nie rozumiem', translation: "I don't understand", emoji: '🤔' },
+    'pl-mowisz-angielsku': { id: 'pl-mowisz-angielsku', text: 'Czy mówisz po angielsku?', translation: 'do you speak English?', emoji: '🗣️' },
+    'pl-powoli': { id: 'pl-powoli', text: 'Proszę powoli', translation: 'more slowly, please', emoji: '🐢' },
+    'pl-ile-kosztuje': { id: 'pl-ile-kosztuje', text: 'Ile to kosztuje?', translation: 'how much does it cost?', emoji: '💰' },
+    'pl-lubi-to': { id: 'pl-lubi-to', text: 'Lubię to', translation: 'I like it', emoji: '❤️' },
+    // Common verbs
+    'pl-byc': { id: 'pl-byc', text: 'być', translation: 'to be', emoji: '🧍' },
+    'pl-miec': { id: 'pl-miec', text: 'mieć', translation: 'to have', emoji: '🫴' },
+    'pl-isc': { id: 'pl-isc', text: 'iść', translation: 'to go', emoji: '🚶' },
+    'pl-robic': { id: 'pl-robic', text: 'robić', translation: 'to do / make', emoji: '🔨' },
+    'pl-chciec': { id: 'pl-chciec', text: 'chcieć', translation: 'to want', emoji: '🎯' },
+    'pl-moc': { id: 'pl-moc', text: 'móc', translation: 'can / to be able', emoji: '💪' },
+    // Getting around
+    'pl-gdzie': { id: 'pl-gdzie', text: 'Gdzie?', translation: 'where?', emoji: '🧭' },
+    'pl-tutaj': { id: 'pl-tutaj', text: 'tutaj', translation: 'here', emoji: '🈯' },
+    'pl-tam': { id: 'pl-tam', text: 'tam', translation: 'there', emoji: '↔️' },
+    'pl-dworzec': { id: 'pl-dworzec', text: 'dworzec', translation: 'the station', emoji: '🚉' },
+    'pl-lotnisko': { id: 'pl-lotnisko', text: 'lotnisko', translation: 'the airport', emoji: '✈️' },
+    'pl-bilet': { id: 'pl-bilet', text: 'bilet', translation: 'the ticket', emoji: '🎫' },
+    'pl-taksowka': { id: 'pl-taksowka', text: 'taksówka', translation: 'taxi', emoji: '🚕' },
+  },
+  units: [
+    {
+      id: 'pl-u1',
+      title: 'Witamy',
+      subtitle: 'Say hello and goodbye',
+      emoji: '👋',
+      lessons: [
+        { id: 'pl-l1', title: 'Przywitanie', itemIds: ['pl-dzien-dobry', 'pl-dobry-wieczor', 'pl-dobra-noc', 'pl-czesc', 'pl-do-widzenia', 'pl-do-zobaczenia'] },
+      ],
+    },
+    {
+      id: 'pl-u2',
+      title: 'Uprzejmość',
+      subtitle: 'Please, thanks, and more',
+      emoji: '💬',
+      lessons: [
+        { id: 'pl-l2', title: 'Proszę i dziękuję', itemIds: ['pl-dziekuje', 'pl-prosze', 'pl-przepraszam', 'pl-tak', 'pl-nie', 'pl-nie-ma-za-co'] },
+      ],
+    },
+    {
+      id: 'pl-u3',
+      title: 'Przedstaw się',
+      subtitle: 'Introduce yourself',
+      emoji: '🙋',
+      lessons: [
+        { id: 'pl-l3', title: 'O mnie', itemIds: ['pl-jak-sie-masz', 'pl-mam-namie', 'pl-milo-mi', 'pl-a-ty', 'pl-dobrze', 'pl-skad-jestes'] },
+      ],
+    },
+    {
+      id: 'pl-u4',
+      title: 'Liczby',
+      subtitle: 'Count from one to ten',
+      emoji: '🔢',
+      lessons: [
+        { id: 'pl-l4', title: 'Jeden do dziesięciu', itemIds: ['pl-jeden', 'pl-dwa', 'pl-trzy', 'pl-cztery', 'pl-piec', 'pl-szesc', 'pl-siedem', 'pl-osiem', 'pl-dziewiec', 'pl-dziesiec'] },
+      ],
+    },
+    {
+      id: 'pl-u5',
+      title: 'Kolory',
+      subtitle: 'Name the colors',
+      emoji: '🎨',
+      lessons: [
+        { id: 'pl-l5', title: 'Podstawowe kolory', itemIds: ['pl-czerwony', 'pl-niebieski', 'pl-zielony', 'pl-zolty', 'pl-bialy', 'pl-czarny', 'pl-rozowy', 'pl-fioletowy'] },
+      ],
+    },
+    {
+      id: 'pl-u6',
+      title: 'Jedzenie i picie',
+      subtitle: 'Everyday essentials',
+      emoji: '🍎',
+      lessons: [
+        { id: 'pl-l6', title: 'Przy stole', itemIds: ['pl-woda', 'pl-chleb', 'pl-kawa', 'pl-mleko', 'pl-jablko', 'pl-jesc', 'pl-pic', 'pl-chce'] },
+      ],
+    },
+    {
+      id: 'pl-u7',
+      title: 'Rodzina',
+      subtitle: 'Talk about your family',
+      emoji: '👨‍👩‍👧',
+      lessons: [
+        { id: 'pl-l7', title: 'Moja rodzina', itemIds: ['pl-matka', 'pl-ojciec', 'pl-brat', 'pl-siostra', 'pl-syn', 'pl-corka', 'pl-rodzina', 'pl-przyjaciel'] },
+      ],
+    },
+    {
+      id: 'pl-u8',
+      title: 'Przydatne zwroty',
+      subtitle: 'Useful sentences',
+      emoji: '🗨️',
+      lessons: [
+        { id: 'pl-l8', title: 'W podróży', itemIds: ['pl-gdzie-toaleta', 'pl-nie-rozumiem', 'pl-mowisz-angielsku', 'pl-powoli', 'pl-ile-kosztuje', 'pl-lubi-to'] },
+      ],
+    },
+    {
+      id: 'pl-u9',
+      title: 'Czasowniki',
+      subtitle: 'Essential action words',
+      emoji: '🏃',
+      lessons: [
+        { id: 'pl-l9', title: 'Podstawowe czasowniki', itemIds: ['pl-byc', 'pl-miec', 'pl-isc', 'pl-robic', 'pl-chciec', 'pl-moc'] },
+      ],
+    },
+    {
+      id: 'pl-u10',
+      title: 'Poruszanie się',
+      subtitle: 'Travel and directions',
+      emoji: '🧭',
+      lessons: [
+        { id: 'pl-l10', title: 'W drodze', itemIds: ['pl-gdzie', 'pl-tutaj', 'pl-tam', 'pl-dworzec', 'pl-lotnisko', 'pl-bilet', 'pl-taksowka'] },
+      ],
+    },
+  ],
+};

@@ -120,7 +120,7 @@ function loadPack(file, varName) {
   return new Function(src)();
 }
 function packFor(lang) {
-  const map = { es: ['es.ts', 'esPack'], fr: ['fr.ts', 'frPack'] };
+  const map = { es: ['es.ts', 'esPack'], fr: ['fr.ts', 'frPack'], pl: ['pl.ts', 'plPack'] };
   if (!map[lang]) throw new Error(`No pack for language '${lang}'`);
   return loadPack(map[lang][0], map[lang][1]);
 }

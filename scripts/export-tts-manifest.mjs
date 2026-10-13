@@ -25,6 +25,7 @@ const out = {};
 for (const [file, name, code] of [
   ['es.ts', 'esPack', 'es'],
   ['fr.ts', 'frPack', 'fr'],
+  ['pl.ts', 'plPack', 'pl'],
 ]) {
   const pack = loadPack(file, name);
   out[code] = Object.values(pack.items).map((i) => ({ id: i.id, text: i.text }));

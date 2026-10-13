@@ -2,10 +2,11 @@ import type { Dialogue, LanguagePack, Lesson, LexicalItem } from './schema';
 import { generateExercises } from './engine';
 import { esPack } from './es';
 import { frPack } from './fr';
+import { plPack } from './pl';
 import { dialogues } from './dialogues';
 
 /** Register every available language pack here. */
-export const packs: LanguagePack[] = [esPack, frPack];
+export const packs: LanguagePack[] = [esPack, frPack, plPack];
 
 export const defaultLanguageCode = packs[0].code;
 

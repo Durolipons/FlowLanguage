@@ -19,6 +19,7 @@ let failed = false;
 for (const [file, name] of [
   ['es.ts', 'esPack'],
   ['fr.ts', 'frPack'],
+  ['pl.ts', 'plPack'],
 ]) {
   const pack = loadPack(file, name);
   const itemKeys = Object.keys(pack.items);
@@ -54,6 +55,7 @@ for (const [file, name] of [
 for (const [file, name] of [
   ['es.ts', 'esPack'],
   ['fr.ts', 'frPack'],
+  ['pl.ts', 'plPack'],
 ]) {
   const pack = loadPack(file, name);
   const ids = Object.values(pack.items).map((i) => i.id);

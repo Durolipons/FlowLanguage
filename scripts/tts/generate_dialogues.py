@@ -20,7 +20,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 DIALOGUES = os.path.join(HERE, "dialogues.json")
-LANGS = ("es", "fr")
+LANGS = ("es", "fr", "pl")
 
 
 def main() -> None:
