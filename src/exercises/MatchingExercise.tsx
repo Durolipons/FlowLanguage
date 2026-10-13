@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { ChoiceButton, type CardState, type ExerciseProps } from './common';
 import { Visual } from '@/components/Visual';
 import { PrimaryButton } from '@/components/ui';
-import { speak } from '@/audio/tts';
+import { playItemAudio } from '@/audio/player';
 import { colors, fontSize, spacing } from '@/theme';
 
 type Variant = 'listen_match' | 'text_to_image' | 'image_to_text';
@@ -22,8 +22,8 @@ export function MatchingExercise({
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const play = useCallback(() => {
-    speak(item.text, ttsLanguage);
-  }, [item.text, ttsLanguage]);
+    playItemAudio(item, ttsLanguage);
+  }, [item, ttsLanguage]);
 
   useEffect(() => {
     if (variant === 'listen_match') play();

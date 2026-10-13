@@ -1,13 +1,16 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/theme';
 import type { LexicalItem } from '@/content';
+import { getImageAsset } from '@/content/assets/imageAssets';
 
-/** Renders an item's visual: a bundled/remote image if present, else a big emoji. */
+/** Renders an item's visual: a bundled image, then a remote URL, then an emoji. */
 export function Visual({ item, size = 120 }: { item: LexicalItem; size?: number }) {
-  if (item.image) {
+  const bundled = getImageAsset(item.id);
+  const source = bundled ?? (item.image ? { uri: item.image } : undefined);
+  if (source) {
     return (
       <Image
-        source={{ uri: item.image }}
+        source={source}
         style={{ width: size, height: size, borderRadius: 20, backgroundColor: colors.border }}
         resizeMode="cover"
       />
@@ -30,3 +33,4 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
 });
+

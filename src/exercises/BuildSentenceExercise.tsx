@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { ExerciseProps } from './common';
 import { shuffle } from '@/content/engine';
 import { PrimaryButton } from '@/components/ui';
-import { speak } from '@/audio/tts';
+import { playItemAudio } from '@/audio/player';
 import { tokensMatch, tokenize } from '@/utils/text';
 import { colors, fontSize, radius, spacing } from '@/theme';
 
@@ -58,7 +58,7 @@ export function BuildSentenceExercise({ exercise, ttsLanguage, onResolved }: Exe
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.translation}>{item.translation}</Text>
-        <Pressable onPress={() => speak(item.text, ttsLanguage)} hitSlop={8}>
+        <Pressable onPress={() => playItemAudio(item, ttsLanguage)} hitSlop={8}>
           <Text style={styles.speaker}>🔊</Text>
         </Pressable>
       </View>

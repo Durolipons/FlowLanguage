@@ -78,11 +78,16 @@ and an `emoji` (used as the visual). Multi-word phrases automatically get a
 
 ## Notes & current limitations
 
-- **Images are emoji placeholders** so the MVP needs no asset files. The schema
-  supports real images: set an item's `image` to a URL (or wire up bundled
-  assets) and the same exercises use it.
-- **Audio is on-device TTS.** The schema also supports recorded audio (`audio`
-  field) if you later add native-speaker recordings.
+- **Images:** every item shows a bundled image first, then a remote `image` URL,
+  then an emoji. The repo ships **placeholder** PNGs for all items
+  (`assets/images/<lang>/`), wired via `src/content/assets/imageAssets.ts`.
+  Replace any PNG with a real photo (same filename) — no code changes needed.
+  Regenerate placeholders with `npm run gen:images`.
+- **Recorded audio:** `src/audio/player.ts` plays a bundled recording or a
+  remote `audio` URL via `expo-audio`, falling back to on-device TTS.
+  `audioAssets.ts` ships empty (TTS everywhere); run `npm run gen:audio` to test
+  the recorded path with placeholder tones, then drop real recordings in
+  `assets/audio/<lang>/`.
 - **Speech recognition** requires a device/browser that supports it:
   - iOS/Android: system speech recognition (grant mic + speech permission)
   - Web: Chrome/Edge (Web Speech API). If unavailable, the Pronounce exercise
@@ -93,4 +98,5 @@ and an `emoji` (used as the visual). Multi-word phrases automatically get a
 ## Tech stack
 
 React Native 0.87 · Expo SDK 57 · expo-router · expo-speech ·
-expo-speech-recognition · expo-sqlite · Zustand · TypeScript.
+expo-speech-recognition · expo-audio · expo-asset · expo-sqlite · Zustand ·
+TypeScript.

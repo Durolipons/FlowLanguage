@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import type { ExerciseProps } from './common';
 import { Visual } from '@/components/Visual';
 import { PrimaryButton } from '@/components/ui';
-import { speak } from '@/audio/tts';
+import { playItemAudio } from '@/audio/player';
 import { useSpeechRecognition } from '@/audio/useSpeechRecognition';
 import { phrasesMatch } from '@/utils/text';
 import { colors, fontSize, radius, spacing } from '@/theme';
@@ -16,7 +16,7 @@ export function PronounceExercise({ exercise, ttsLanguage, speechLocale, onResol
   const attempts = useRef(0);
   const done = useRef(false);
 
-  const play = () => speak(item.text, ttsLanguage);
+  const play = () => playItemAudio(item, ttsLanguage);
 
   const handleRecord = async () => {
     if (busy || done.current) return;
