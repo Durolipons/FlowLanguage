@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "validate": "node scripts/validate-content.mjs",
     "gen:images": "node scripts/generate-image-placeholders.mjs",
-    "gen:audio": "node scripts/generate-audio-placeholders.mjs"
+    "gen:audio": "node scripts/generate-audio-placeholders.mjs",
+    "import:assets": "node scripts/import-assets.mjs"
   },
   "dependencies": {
     "@expo/metro-runtime": "~57.0.16",

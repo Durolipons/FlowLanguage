@@ -1,6 +1,7 @@
 import { createAudioPlayer, type AudioPlayer, type AudioSource } from 'expo-audio';
 import type { LexicalItem } from '@/content';
 import { getAudioAsset } from '@/content/assets/audioAssets';
+import { remoteAudio } from '@/content/assets/remoteAssets';
 import { speak, stopSpeaking } from './tts';
 
 let player: AudioPlayer | null = null;
@@ -9,6 +10,8 @@ let player: AudioPlayer | null = null;
 function resolveSource(item: LexicalItem): AudioSource | null {
   const bundled = getAudioAsset(item.id);
   if (bundled != null) return bundled;
+  const remote = remoteAudio[item.id];
+  if (remote) return { uri: remote };
   if (item.audio) return { uri: item.audio };
   return null;
 }

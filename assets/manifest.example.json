@@ -1,0 +1,11 @@
+{
+  "images": {
+    "es-agua": "https://example.com/images/agua.jpg",
+    "es-pan": "https://example.com/images/pan.jpg",
+    "fr-eau": "https://example.com/images/eau.jpg"
+  },
+  "audio": {
+    "es-agua": "https://example.com/audio/agua.mp3",
+    "fr-bonjour": "https://example.com/audio/bonjour.mp3"
+  }
+}

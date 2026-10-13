@@ -76,6 +76,22 @@ Each item has a `text` (target), `translation` (English, hidden in lessons),
 and an `emoji` (used as the visual). Multi-word phrases automatically get a
 **Build the Sentence** exercise.
 
+## Bulk-importing real images & audio
+
+Add real assets in bulk from a manifest (JSON or CSV) that maps item id → URL:
+
+```bash
+cp assets/manifest.example.json assets/manifest.json   # fill in your URLs
+npm run import:assets                                    # link mode (reference remote URLs)
+npm run import:assets -- --download                      # download mode (fetch + rebundle offline)
+npm run import:assets -- --manifest assets/my.csv        # use a CSV instead
+```
+
+- Manifest keys are item ids (e.g. `es-agua`); see `assets/manifest.example.json` / `.csv`.
+- **Link mode** writes URLs to `src/content/assets/remoteAssets.ts` (bundled assets still take priority).
+- **Download mode** saves files into `assets/images|audio/<lang>/`, replaces any placeholder, and regenerates the bundled registries.
+- Resolution order: **bundled asset → remote URL → item's own `image`/`audio` → emoji / TTS**.
+
 ## Notes & current limitations
 
 - **Images:** every item shows a bundled image first, then a remote `image` URL,

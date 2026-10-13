@@ -2,11 +2,14 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/theme';
 import type { LexicalItem } from '@/content';
 import { getImageAsset } from '@/content/assets/imageAssets';
+import { remoteImages } from '@/content/assets/remoteAssets';
 
 /** Renders an item's visual: a bundled image, then a remote URL, then an emoji. */
 export function Visual({ item, size = 120 }: { item: LexicalItem; size?: number }) {
   const bundled = getImageAsset(item.id);
-  const source = bundled ?? (item.image ? { uri: item.image } : undefined);
+  const remote = remoteImages[item.id];
+  const source =
+    bundled ?? (remote ? { uri: remote } : undefined) ?? (item.image ? { uri: item.image } : undefined);
   if (source) {
     return (
       <Image
