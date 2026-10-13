@@ -5,6 +5,10 @@ One TypeScript codebase runs on **iOS, Android, and the web** (installable as a
 desktop PWA). It uses the "Dynamic Immersion" idea: you learn through images,
 audio and context — no translation in the lessons.
 
+> **Architecture & the Course Generation Layer** — how content plus audio/images
+> are generated offline (Kokoro / Chatterbox / Piper) and sourced (Openverse,
+> Wikimedia, Pixabay, Unsplash): see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
 ## Features (MVP)
 
 - **5 exercise types** (auto-generated from vocabulary):
