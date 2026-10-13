@@ -14,6 +14,12 @@ function loadPack(file, varName) {
   src = src.replace(new RegExp(`export const ${varName}: LanguagePack =`), 'return');
   return new Function(src)();
 }
+function loadDialogues() {
+  let src = readFileSync(join(contentDir, 'dialogues.ts'), 'utf8');
+  src = src.replace(/^import[^\n]*\n/m, '');
+  src = src.replace(/export const dialogues: Dialogue\[\] =/, 'return');
+  return new Function(src)();
+}
 
 const out = {};
 for (const [file, name, code] of [
@@ -28,3 +34,7 @@ mkdirSync(join(root, 'scripts', 'tts'), { recursive: true });
 writeFileSync(join(root, 'scripts', 'tts', 'manifest.json'), JSON.stringify(out, null, 2) + '\n');
 const total = Object.values(out).reduce((n, a) => n + a.length, 0);
 console.log(`Wrote scripts/tts/manifest.json (${total} items across ${Object.keys(out).length} languages)`);
+
+const dlg = loadDialogues();
+writeFileSync(join(root, 'scripts', 'tts', 'dialogues.json'), JSON.stringify(dlg, null, 2) + '\n');
+console.log(`Wrote scripts/tts/dialogues.json (${dlg.length} dialogues)`);

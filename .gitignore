@@ -18,4 +18,5 @@ voices/*.mp3
 __pycache__/
 *.pyc
 scripts/tts/manifest.json
+scripts/tts/dialogues.json
 

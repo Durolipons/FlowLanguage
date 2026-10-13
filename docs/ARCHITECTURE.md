@@ -103,11 +103,14 @@ Current (`src/content/schema.ts`):
 - `LexicalItem { id, text, translation, emoji?, image?, audio? }`
 - `Unit → Lesson → itemIds[]`  (exercises auto-generated from items)
 
-Planned addition for the Chatterbox track:
+**Implemented for the Chatterbox track** (`src/content/dialogues.ts`):
 
-- `Dialogue { id, title, language, turns: Turn[] }`
-- `Turn { speaker, text, audio? }`  → rendered by a chat-style **dialogue player**;
-  generated with a reference clip **per speaker** for distinct voices.
+- `Dialogue { id, title, language, emoji?, speakers[], turns: Turn[] }`
+- `Turn { speaker, text, translation?, audio? }`  → rendered by a chat-style
+  **dialogue player** (`app/dialogue/[id].tsx`); `Turn` audio generated with a
+  reference clip **per speaker** (`voices/<lang>_<speaker>.wav`) for distinct voices.
+- Accessible from the home screen → **Dialogues** (`app/dialogues.tsx`). Turns
+  fall back to on-device TTS until Chatterbox audio is generated.
 
 > **Open design question:** the `translation` field is currently **English**. For an
 > *English* course you'd want translations in the learner's L1 (or hide them for
@@ -220,8 +223,9 @@ polished stock and are OK registering a free API key. Always record `creator` +
 - **[x] Audio v1** — TTS + recorded-audio fallback; XTTS replaced with Kokoro/Chatterbox.
 - **[ ] Kokoro breadth** — add **English** and **German** packs (decide translation
   language for the English course).
-- **[ ] Chatterbox dialogues** — `Dialogue` schema + chat-style player + per-speaker
-  voice cloning. *(Differentiating feature.)*
+- **[x] Chatterbox dialogues** — `Dialogue`/`Turn` schema + chat-style player + per-
+  speaker voice cloning (Chatterbox). Sample Spanish & French dialogues shipped;
+  generated audio via `scripts/tts/generate_dialogues.py`. *(Differentiating feature.)*
 - **[x] Image fetch helper** — `scripts/fetch-images.mjs` over Openverse/Wikimedia/
   Pixabay/Unsplash; auto-fetches on new items + records attribution.
 - **[ ] Piper low-resource** — Common Voice → train → ship for Shona/Zulu.

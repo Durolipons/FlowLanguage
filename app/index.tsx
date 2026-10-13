@@ -100,6 +100,18 @@ export default function HomeScreen() {
           </Pressable>
         )}
 
+        <Pressable
+          onPress={() => router.push('/dialogues')}
+          style={({ pressed }) => [styles.dialogueCard, pressed && { opacity: 0.95 }]}
+        >
+          <Text style={styles.dialogueEmoji}>💬</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.dialogueTitle}>Dialogues</Text>
+            <Text style={styles.dialogueSub}>Listen to real conversations</Text>
+          </View>
+          <Text style={styles.chevron}>›</Text>
+        </Pressable>
+
         <Text style={styles.sectionTitle}>Lessons</Text>
         <View style={styles.units}>
           {pack.units.map((unit) => {
@@ -198,6 +210,19 @@ const styles = StyleSheet.create({
   reviewEmoji: { fontSize: 26 },
   reviewTitle: { fontSize: fontSize.md, fontWeight: '700', color: colors.text },
   reviewSub: { fontSize: fontSize.sm, color: colors.textMuted },
+  dialogueCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing(3),
+    backgroundColor: colors.card,
+    borderRadius: radius.lg,
+    padding: spacing(4),
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  dialogueEmoji: { fontSize: 26 },
+  dialogueTitle: { fontSize: fontSize.md, fontWeight: '700', color: colors.text },
+  dialogueSub: { fontSize: fontSize.sm, color: colors.textMuted },
   sectionTitle: { fontSize: fontSize.lg, fontWeight: '800', color: colors.text, marginTop: spacing(2) },
   units: { gap: spacing(3) },
   unitCard: {

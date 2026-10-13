@@ -1,7 +1,8 @@
-import type { LanguagePack, Lesson, LexicalItem } from './schema';
+import type { Dialogue, LanguagePack, Lesson, LexicalItem } from './schema';
 import { generateExercises } from './engine';
 import { esPack } from './es';
 import { frPack } from './fr';
+import { dialogues } from './dialogues';
 
 /** Register every available language pack here. */
 export const packs: LanguagePack[] = [esPack, frPack];
@@ -42,6 +43,16 @@ export function findLesson(pack: LanguagePack, lessonId: string): FlatLesson | u
 /** Resolve a lexical item by id. */
 export function getItem(pack: LanguagePack, itemId: string): LexicalItem | undefined {
   return pack.items[itemId];
+}
+
+/** All dialogues for a language pack. */
+export function getDialogues(code: string): Dialogue[] {
+  return dialogues.filter((d) => d.language === code);
+}
+
+/** Look up a dialogue by id. */
+export function getDialogue(id: string): Dialogue | undefined {
+  return dialogues.find((d) => d.id === id);
 }
 
 /** Build the exercise list for a lesson. */

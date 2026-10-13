@@ -77,3 +77,27 @@ export interface ExerciseInstance {
   /** For matching types: the target + distractors, already shuffled. */
   choices: LexicalItem[];
 }
+
+/** A single line in a dialogue, spoken by one speaker. */
+export interface DialogueTurn {
+  /** Speaker id (e.g. "ana", "luis") — used for per-speaker voice assignment. */
+  speaker: string;
+  /** What the speaker says, in the target language. */
+  text: string;
+  /** Optional English gloss (hidden by default for immersion). */
+  translation?: string;
+  /** Optional bundled/remote audio URL (falls back to TTS when absent). */
+  audio?: string;
+}
+
+/** A multi-turn conversation for listening/speaking practice. */
+export interface Dialogue {
+  id: string;
+  title: string;
+  /** Language pack code this dialogue belongs to (e.g. "es", "fr"). */
+  language: string;
+  emoji?: string;
+  /** Distinct speaker ids in order of appearance. */
+  speakers: string[];
+  turns: DialogueTurn[];
+}
