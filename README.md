@@ -92,6 +92,22 @@ npm run import:assets -- --manifest assets/my.csv        # use a CSV instead
 - **Download mode** saves files into `assets/images|audio/<lang>/`, replaces any placeholder, and regenerates the bundled registries.
 - Resolution order: **bundled asset → remote URL → item's own `image`/`audio` → emoji / TTS**.
 
+## Natural voices with XTTS-v2 (optional)
+
+Replace on-device TTS with natural, cloned voices for Spanish & French:
+
+```bash
+# one-time setup in a Python 3.9-3.11 env (coqui-tts does NOT support 3.12+)
+pip install coqui-tts
+# add a ~6s reference clip per language to voices/  (see voices/README.md)
+npm run tts:manifest
+python scripts/tts/generate_xtts.py --lang es --speaker voices/es_ref.wav
+npm run register:audio
+```
+
+Full guide: `scripts/tts/README.md`. XTTS-v2 supports Spanish & French and is
+licensed under the **Coqui Public Model License (non-commercial)**.
+
 ## Notes & current limitations
 
 - **Images:** every item shows a bundled image first, then a remote `image` URL,

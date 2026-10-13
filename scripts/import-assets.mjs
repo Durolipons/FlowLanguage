@@ -185,6 +185,11 @@ async function runDownload(map, kind, defExt) {
 }
 
 async function main() {
+  if (argv.includes('--register-audio')) {
+    regenerateBundled('audio');
+    console.log('Regenerated src/content/assets/audioAssets.ts from assets/audio/ on disk.');
+    return;
+  }
   if (!existsSync(manifestPath)) {
     console.error(`Manifest not found: ${manifestPath}`);
     console.error('Create one (see assets/manifest.example.json) or pass --manifest <path>.');

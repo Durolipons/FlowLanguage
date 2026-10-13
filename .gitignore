@@ -10,3 +10,12 @@ npm-debug.*
 *.orig.*
 web-build/
 .expo-shared/
+
+# XTTS-v2 reference voices & Python env (personal / large)
+voices/*.wav
+voices/*.mp3
+.venv/
+__pycache__/
+*.pyc
+scripts/tts/manifest.json
+
