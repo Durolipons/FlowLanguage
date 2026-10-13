@@ -77,10 +77,15 @@ shipped app only contains the resulting WAV/PNG files.
 | **Chatterbox** | MIT ✅ (watermarked output) | **Dialogues** & listening — expressive, clones a character voice | es, fr + ~20 |
 | **Piper** | GPL engine (ship files, not engine) | **Low-resource** languages via fine-tuning | shona, zulu, … |
 
-**Rationale for the split:** Kokoro is cheap/fast for the large volume of
-single-word/short-phrase vocabulary; Chatterbox earns its cost on multi-turn
-dialogues where naturalness and distinct per-speaker voices matter; Piper is the
-only viable route for languages the big multilingual models don't cover.
+**Rationale for the split:**
+- **Kokoro** — fast, excellent quality, Apache 2.0 (commercially friendly). The
+  default for **vocabulary, phrases, and even straightforward dialogues**.
+- **Chatterbox** — higher expressive range; use it where emotion, storytelling,
+  and distinct character voices matter — **conversations and listening
+  exercises**. Gives dialogues more life than typical TTS.
+- **Piper** — extremely lightweight, runs on almost anything; the **fallback
+  engine** and the only viable route for **Shona, Zulu**, and other languages the
+  big multilingual models don't yet support well.
 
 > **License note (why not XTTS-v2):** XTTS-v2 weights are under the *Coqui Public
 > Model License* — **non-commercial, and the outputs inherit the restriction**.
@@ -161,9 +166,18 @@ places; fall back to **Wikimedia Commons**; use **Pixabay/Unsplash** when you wa
 polished stock and are OK registering a free API key. Always record `creator` +
 `license` + source URL per image so you can ship an attribution file.
 
-> **Planned helper:** a `scripts/fetch-images.mjs` that queries these sources by
-> keyword and emits the `itemId → imageUrl` manifest for `import:assets`. Not built
-> yet (see roadmap). Verify current rate limits/keys in each provider's docs.
+> **Built:** `scripts/fetch-images.mjs` auto-fetches a suitable image when you add
+> a vocabulary item — it queries **Openverse → Wikimedia → Pixabay → Unsplash**
+> (first hit wins), saves the file to `assets/images/<lang>/`, and records
+> attribution in `assets/images/ATTRIBUTION.json`.
+>
+> ```bash
+> npm run fetch:images -- --lang es --missing        # fill every missing item
+> npm run fetch:images -- --lang es --id es-manzana  # one item
+> npm run register:images                            # wire bundled images
+> ```
+>
+> Verify current rate limits/keys in each provider's docs.
 
 ---
 
@@ -208,7 +222,25 @@ polished stock and are OK registering a free API key. Always record `creator` +
   language for the English course).
 - **[ ] Chatterbox dialogues** — `Dialogue` schema + chat-style player + per-speaker
   voice cloning. *(Differentiating feature.)*
-- **[ ] Image fetch helper** — `scripts/fetch-images.mjs` over Openverse/Wikimedia/
-  Pixabay/Unsplash → manifest.
+- **[x] Image fetch helper** — `scripts/fetch-images.mjs` over Openverse/Wikimedia/
+  Pixabay/Unsplash; auto-fetches on new items + records attribution.
 - **[ ] Piper low-resource** — Common Voice → train → ship for Shona/Zulu.
+
+---
+
+## 10. Long-term vision
+
+FlowLanguage Core — a modular learning app where each module reuses the same
+**Course Generation Layer** for media and the same runtime primitives (content
+packs, registries, SRS, streak):
+
+```
+FlowLanguage Core
+├── Vocabulary    ✅  Kokoro-backed packs + 5 exercise types
+├── Grammar       ⬚  implicit (build-sentence) + explicit drills later
+├── Listening     ⬚  Chatterbox dialogues / listening exercises
+├── Speaking      ⬚  pronunciation via on-device speech recognition
+├── AI Tutor      ⬚  LLM-guided practice
+└── Story Mode    ⬚  Chatterbox-narrated stories
+```
 

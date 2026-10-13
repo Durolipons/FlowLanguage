@@ -185,9 +185,11 @@ async function runDownload(map, kind, defExt) {
 }
 
 async function main() {
-  if (argv.includes('--register-audio')) {
-    regenerateBundled('audio');
-    console.log('Regenerated src/content/assets/audioAssets.ts from assets/audio/ on disk.');
+  if (argv.includes('--register-audio') || argv.includes('--register-images')) {
+    const kind = argv.includes('--register-audio') ? 'audio' : 'images';
+    regenerateBundled(kind);
+    const file = kind === 'images' ? 'imageAssets.ts' : 'audioAssets.ts';
+    console.log(`Regenerated src/content/assets/${file} from assets/${kind}/ on disk.`);
     return;
   }
   if (!existsSync(manifestPath)) {
