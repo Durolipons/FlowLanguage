@@ -1,5 +1,5 @@
 // Exports the vocabulary text for every language into scripts/tts/manifest.json
-// so the XTTS-v2 generator (scripts/tts/generate_xtts.py) knows what to say.
+// so the voice generator (scripts/tts/generate_voices.py) knows what to say.
 // Run with: npm run tts:manifest
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';

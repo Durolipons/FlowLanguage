@@ -1,44 +1,61 @@
-# Voice generation with XTTS-v2 (Coqui)
+# Voice generation (Kokoro / Chatterbox)
 
-Generate natural, cloned voice files for every vocabulary item, then wire them
-into the app so lessons play real speech instead of on-device TTS.
+Generate natural, **commercially-licensed** voice files for every vocabulary
+item, then wire them into the app so lessons play real speech instead of
+on-device TTS.
 
-## One-time setup (Python 3.9–3.11 — coqui-tts does NOT support 3.12+)
+## Engine choice
+
+| | Kokoro-82M | Chatterbox |
+|---|---|---|
+| License | **Apache 2.0** | **MIT** (output watermarked) |
+| Size / speed | 82M — tiny, fast, CPU-friendly | ~0.5B — GPU ideal |
+| Spanish + French | ✅ built-in voices | ✅ + 20 more languages |
+| Voice cloning | ❌ (pick a built-in voice) | ✅ clone from a reference clip |
+| Install | `pip install kokoro soundfile misaki[en]` + espeak-ng | `pip install chatterbox-tts` |
+
+Both need a **Python 3.9–3.11** environment. Model weights (~80 MB Kokoro,
+~1–2 GB Chatterbox) download on first run.
+
+**Kokoro on Windows also needs the `espeak-ng` system package** (phonemization):
+https://github.com/espeak-ng/espeak-ng/releases — install the `.msi`.
+
+## Generate (Spanish / French)
 
 ```bash
-python -m venv .venv
-# Windows:  .venv\Scripts\activate
-# macOS/Linux:  source .venv/bin/activate
-pip install coqui-tts        # or: pip install TTS
-```
+npm run tts:manifest     # export vocabulary text -> scripts/tts/manifest.json
 
-The XTTS-v2 model (~2 GB) downloads automatically on first run. A GPU is
-strongly recommended (`--gpu`); CPU works but is slow.
+# Kokoro (no reference clip needed; uses a built-in voice)
+python scripts/tts/generate_voices.py --engine kokoro --lang es
+python scripts/tts/generate_voices.py --engine kokoro --lang fr
 
-## Add reference voices
+# Chatterbox (clone a voice from a ~6s clip in voices/)
+python scripts/tts/generate_voices.py --engine chatterbox --lang fr \
+    --speaker ../voices/fr_ref.wav --gpu
 
-Drop one ~6s clean clip per language into `../voices/` (see `../voices/README.md`),
-e.g. `voices/es_ref.wav` and `voices/fr_ref.wav`.
-
-## Generate
-
-```bash
-npm run tts:manifest      # export the vocabulary text to scripts/tts/manifest.json
-
-python scripts/tts/generate_xtts.py --lang es --speaker ../voices/es_ref.wav
-python scripts/tts/generate_xtts.py --lang fr --speaker ../voices/fr_ref.wav --gpu
-
-npm run register:audio    # rebuild audioAssets.ts from assets/audio/ on disk
+npm run register:audio   # rebuild audioAssets.ts from assets/audio/ on disk
 ```
 
 - Existing files are skipped unless you pass `--force`.
 - Output: `assets/audio/<lang>/<slug>.wav` (24 kHz).
-- After `register:audio`, those items play the recording; items without a file
-  still fall back to TTS.
+- After `register:audio`, items with a file play the recording; the rest fall
+  back to on-device TTS.
+- Override Kokoro's voice with `--voice` (e.g. `em_alex`, `ef_dora`, `ff_siwis`).
 
-## Notes
-- **License:** XTTS-v2 is under the Coqui Public Model License (CPML) —
-  non-commercial. Fine for personal use; check terms before distributing.
-- To shrink bundle size, convert WAV → MP3 (e.g. `ffmpeg -i in.wav out.mp3`)
-  and update the file extension in `audioAssets.ts`.
-- `manifest.json` is regenerated from the language packs by `npm run tts:manifest`.
+## Rare languages (Shona, Zulu, …) — different path
+
+**Neither Kokoro nor Chatterbox supports rare languages** — they only cover a
+fixed set. For those, fine-tune a small model instead:
+
+1. **Data:** Mozilla **Common Voice** has Shona & Zulu datasets (CC0). Other
+   sources: Bible.is, local corpora.
+2. **Phonemizer:** `espeak-ng` covers many African languages (verify sn/zu; else
+   you need a custom grapheme-to-phoneme model).
+3. **Train:** **Piper** is the standard tool for low-resource, on-device voices
+   (there are community guides for African languages). Train on the CC0 data.
+4. **Ship files, not the model:** generate WAVs offline into `assets/audio/<lang>/`
+   and run `npm run register:audio`. Because you only distribute the generated
+   audio (not the Piper engine), the app stays license-clean. *(Not legal advice.)*
+
+The app itself needs no changes for a new language — add a content pack and drop
+in its audio.

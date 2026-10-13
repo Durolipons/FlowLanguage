@@ -92,21 +92,29 @@ npm run import:assets -- --manifest assets/my.csv        # use a CSV instead
 - **Download mode** saves files into `assets/images|audio/<lang>/`, replaces any placeholder, and regenerates the bundled registries.
 - Resolution order: **bundled asset → remote URL → item's own `image`/`audio` → emoji / TTS**.
 
-## Natural voices with XTTS-v2 (optional)
+## Natural voices (Kokoro / Chatterbox) — optional
 
-Replace on-device TTS with natural, cloned voices for Spanish & French:
+Replace on-device TTS with natural, **commercially-licensed** voices for Spanish & French:
 
 ```bash
-# one-time setup in a Python 3.9-3.11 env (coqui-tts does NOT support 3.12+)
-pip install coqui-tts
-# add a ~6s reference clip per language to voices/  (see voices/README.md)
+# one-time setup in a Python 3.9-3.11 env
+pip install kokoro soundfile misaki[en]   # Kokoro: Apache 2.0, tiny, CPU-friendly
+#   ...also install the espeak-ng system package (see scripts/tts/README.md)
+# or:
+pip install chatterbox-tts                 # Chatterbox: MIT, voice cloning, GPU ideal
+
 npm run tts:manifest
-python scripts/tts/generate_xtts.py --lang es --speaker voices/es_ref.wav
+python scripts/tts/generate_voices.py --engine kokoro --lang es
+python scripts/tts/generate_voices.py --engine chatterbox --lang fr --speaker voices/fr_ref.wav --gpu
 npm run register:audio
 ```
 
-Full guide: `scripts/tts/README.md`. XTTS-v2 supports Spanish & French and is
-licensed under the **Coqui Public Model License (non-commercial)**.
+- **Kokoro** (Apache 2.0): 82M params, fast, built-in Spanish & French voices.
+- **Chatterbox** (MIT): ~0.5B, higher quality, clones a voice from a ~6s reference clip.
+- **Rare languages (Shona, Zulu, …):** neither supports them out of the box — fine-tune a
+  **Piper** voice from Mozilla Common Voice and ship the WAVs (see `scripts/tts/README.md`).
+
+Full guide: `scripts/tts/README.md`.
 
 ## Notes & current limitations
 
