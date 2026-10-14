@@ -112,6 +112,30 @@ export default function HomeScreen() {
           <Text style={styles.chevron}>›</Text>
         </Pressable>
 
+        <Pressable
+          onPress={() => router.push('/traveller')}
+          style={({ pressed }) => [styles.travellerCard, pressed && { opacity: 0.95 }]}
+        >
+          <Text style={styles.dialogueEmoji}>🧳</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.travellerTitle}>Traveller Mode</Text>
+            <Text style={styles.travellerSub}>Phrasebook, translate & trip decks — offline</Text>
+          </View>
+          <Text style={styles.chevronLight}>›</Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => router.push('/traveller/emergency')}
+          style={({ pressed }) => [styles.emergencyShortcut, pressed && { opacity: 0.95 }]}
+        >
+          <Text style={styles.dialogueEmoji}>🚨</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.emergencyTitle}>Emergency</Text>
+            <Text style={styles.emergencySub}>Doctor, police, taxi, pharmacy — one tap</Text>
+          </View>
+          <Text style={styles.chevron}>›</Text>
+        </Pressable>
+
         <Text style={styles.sectionTitle}>Lessons</Text>
         <View style={styles.units}>
           {pack.units.map((unit) => {
@@ -223,6 +247,29 @@ const styles = StyleSheet.create({
   dialogueEmoji: { fontSize: 26 },
   dialogueTitle: { fontSize: fontSize.md, fontWeight: '700', color: colors.text },
   dialogueSub: { fontSize: fontSize.sm, color: colors.textMuted },
+  travellerCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing(3),
+    backgroundColor: colors.primary,
+    borderRadius: radius.lg,
+    padding: spacing(4),
+  },
+  travellerTitle: { fontSize: fontSize.md, fontWeight: '800', color: colors.white },
+  travellerSub: { fontSize: fontSize.sm, color: colors.primarySoft, marginTop: 2 },
+  chevronLight: { fontSize: fontSize.xl, color: colors.primarySoft },
+  emergencyShortcut: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing(3),
+    backgroundColor: colors.dangerSoft,
+    borderRadius: radius.lg,
+    padding: spacing(4),
+    borderWidth: 1,
+    borderColor: colors.danger,
+  },
+  emergencyTitle: { fontSize: fontSize.md, fontWeight: '800', color: colors.danger },
+  emergencySub: { fontSize: fontSize.sm, color: colors.textMuted, marginTop: 2 },
   sectionTitle: { fontSize: fontSize.lg, fontWeight: '800', color: colors.text, marginTop: spacing(2) },
   units: { gap: spacing(3) },
   unitCard: {

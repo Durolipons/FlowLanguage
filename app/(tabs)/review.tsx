@@ -66,7 +66,7 @@ export default function ReviewScreen() {
         <Text style={styles.bigEmoji}>✅</Text>
         <Text style={styles.title}>All caught up!</Text>
         <Text style={styles.text}>No words are due for review right now.</Text>
-        <PrimaryButton label="Back to home" onPress={() => router.back()} />
+        <PrimaryButton label="Back to home" onPress={() => router.replace('/')} />
       </SafeAreaView>
     );
   }
@@ -85,7 +85,7 @@ export default function ReviewScreen() {
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <View style={styles.header}>
-        <PrimaryButton label="‹ Exit" tone="neutral" onPress={() => router.back()} />
+        <PrimaryButton label="‹ Home" tone="neutral" onPress={() => router.replace('/')} />
         <Text style={styles.headerTitle}>Review</Text>
       </View>
       <ExercisePlayer
@@ -93,6 +93,7 @@ export default function ReviewScreen() {
         language={languageCode}
         ttsLanguage={pack.ttsLanguage}
         speechLocale={pack.speechLocale}
+        script={pack.script}
         onComplete={handleComplete}
         onExit={() => router.back()}
       />

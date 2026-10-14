@@ -14,10 +14,6 @@ export default function DialoguesScreen() {
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <ScrollView contentContainerStyle={styles.scroll}>
-        <Pressable onPress={() => router.back()} hitSlop={12} style={styles.back}>
-          <Text style={styles.backIcon}>‹ Back</Text>
-        </Pressable>
-
         <Text style={styles.title}>Dialogues</Text>
         <Text style={styles.subtitle}>
           {pack.flag} {pack.name} · listen and read along
@@ -56,8 +52,6 @@ export default function DialoguesScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
   scroll: { padding: spacing(5), gap: spacing(3) },
-  back: { alignSelf: 'flex-start' },
-  backIcon: { fontSize: fontSize.md, color: colors.primary, fontWeight: '700' },
   title: { fontSize: fontSize.xxl, fontWeight: '800', color: colors.text },
   subtitle: { fontSize: fontSize.sm, color: colors.textMuted },
   list: { gap: spacing(3), marginTop: spacing(2) },
