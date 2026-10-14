@@ -22,7 +22,10 @@ audio and context — no translation in the lessons.
 - **Daily streak + goal + XP** — built for a morning routine
 - **Spaced-repetition review** queue (simplified SM-2) so words resurface at
   the right time
-- **Multiple languages**, switchable at runtime (Spanish + French included)
+- **Multiple languages**, switchable at runtime (Spanish, French, Polish, and
+  Arabic — including RTL layout + transliteration)
+- **🧳 Traveller Mode** — an offline travel companion (phrasebook, matched-phrase
+  translate, speak, trip decks, SM-2 review, and a one-tap emergency screen)
 
 ## Run it
 
@@ -47,15 +50,22 @@ npx expo start         # then press "a" for Android, "i" for iOS,
 
 ```
 app/                     # screens (Expo Router, file-based routing)
-  index.tsx              # home dashboard: streak, daily goal, continue, review
+  _layout.tsx            # root stack; (tabs) is a URL-transparent bottom-tab group
+  (tabs)/                # bottom tabs: Learn · Practice · Traveller · Review · Settings
+    index.tsx            # Learn home: streak, daily goal, continue, Traveller card
+    dialogues.tsx        # Practice: conversation dialogues
+    traveller/           # Traveller Mode (translate, speak, learn,
+                         #   phrasebook, trips, review, emergency)
+    review.tsx           # Review: spaced-repetition word queue
+    settings.tsx         # Settings
   languages.tsx          # language picker
   unit/[id].tsx          # a unit and its lessons
   lesson/[id].tsx        # the lesson player + completion summary
-  review.tsx             # spaced-repetition review queue
 src/
   content/               # language packs (data-driven) + exercise engine
     schema.ts            # content types
-    es.ts, fr.ts         # the actual vocabulary for each language
+    es.ts, fr.ts, pl.ts, ar.ts   # the actual vocabulary for each language
+    traveller*.ts        # curated Traveller-Mode phrases per language
     engine.ts            # turns lesson items into exercise instances
   exercises/             # the 5 exercise components + router
   audio/                 # text-to-speech + speech-recognition wrappers
@@ -71,14 +81,34 @@ src/
 Content is **data-driven** — you only add vocabulary, not exercise wiring.
 
 1. Copy `src/content/es.ts` to e.g. `src/content/de.ts`, edit the `code`,
-   `name`, `flag`, `speechLocale`/`ttsLanguage` (e.g. `de-DE`), the `items`,
-   and the `units`/`lessons`.
+   `name`, `flag`, `speechLocale`/`ttsLanguage` (e.g. `de-DE`), the required
+   `script` (`latin`/`arabic`/`cjk`), `direction` (`ltr`/`rtl`) and
+   `romanizationScheme`, the `items`, and the `units`/`lessons`.
 2. Register it in `src/content/index.ts`: `import { dePack } from './de';` and
-   add it to `export const packs = [esPack, frPack, dePack];`.
+   add it to `export const packs = [esPack, frPack, plPack, arPack, dePack];`
+   (then add `['de.ts', 'dePack']` to `scripts/validate-content.mjs`).
 
 Each item has a `text` (target), `translation` (English, hidden in lessons),
 and an `emoji` (used as the visual). Multi-word phrases automatically get a
 **Build the Sentence** exercise.
+
+## Traveller Mode (offline travel companion)
+
+An offline phrasebook + matched-phrase translate + speak + flashcards + travel
+trainer for real trips. Core loop **LEARN → USE → SAVE → REVIEW**, all with zero
+network (on-device `expo-speech` + `expo-speech-recognition` + local data):
+
+- **Translate** — type or speak English → curated match (source → target →
+  hint) with Play / Save / Learn-this / Copy.
+- **Speak** — mic → transcript → match → history.
+- **Phrasebook** — search + categories (Airport/Hotel/Restaurant/Shopping/
+  Emergency/Transport + saved Custom phrases).
+- **Trips & Review** — group saved phrases into trip decks, review with SM-2
+  (Easy/Medium/Hard).
+- **Emergency** — one-tap large buttons (Doctor/Police/Taxi/Pharmacy/Help).
+
+Curated phrases live in `src/content/traveller-*.ts` (es/fr/pl/ar); validate
+them with `npm run validate:traveller`. Full design: `docs/TRAVELLER_MODE.md`.
 
 ## Bulk-importing real images & audio
 
