@@ -77,6 +77,7 @@ export default function LessonScreen() {
         language={languageCode}
         ttsLanguage={pack.ttsLanguage}
         speechLocale={pack.speechLocale}
+        script={pack.script}
         onComplete={handleComplete}
         onExit={() => router.back()}
       />

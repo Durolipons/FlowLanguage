@@ -6,6 +6,7 @@ import { getDialogue, requirePack } from '@/content';
 import { playTurnAudio, stopItemAudio } from '@/audio/player';
 import { PrimaryButton } from '@/components/ui';
 import { colors, fontSize, radius, spacing } from '@/theme';
+import { containsArabic, rtlTextStyle } from '@/utils/rtl';
 
 function estimateDuration(text: string): number {
   return Math.min(9000, 700 + text.length * 115);
@@ -126,7 +127,7 @@ export default function DialogueScreen() {
             >
               <Text style={styles.speaker}>{turn.speaker}</Text>
               <View style={[styles.bubble, side === 'right' ? styles.bubbleRight : styles.bubbleLeft, active && styles.bubbleActive]}>
-                <Text style={[styles.bubbleText, side === 'right' && styles.bubbleTextRight]}>{turn.text}</Text>
+                <Text style={[styles.bubbleText, side === 'right' && styles.bubbleTextRight, rtlTextStyle(containsArabic(turn.text))]}>{turn.text}</Text>
                 {showTranslations && turn.translation ? (
                   <Text style={[styles.translation, side === 'right' && styles.translationRight]}>{turn.translation}</Text>
                 ) : null}

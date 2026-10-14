@@ -7,6 +7,9 @@ export const esPack: LanguagePack = {
   flag: '🇪🇸',
   speechLocale: 'es-ES',
   ttsLanguage: 'es-ES',
+  script: 'latin',
+  direction: 'ltr',
+  romanizationScheme: 'none',
   items: {
     // Greetings
     'es-hola': { id: 'es-hola', text: 'hola', translation: 'hello', emoji: '👋' },

@@ -5,6 +5,8 @@ import { shuffle } from '@/content/engine';
 import { PrimaryButton } from '@/components/ui';
 import { playItemAudio } from '@/audio/player';
 import { tokensMatch, tokenize } from '@/utils/text';
+import { containsArabic, rtlTextStyle } from '@/utils/rtl';
+import { Transliteration } from '@/components/Transliteration';
 import { colors, fontSize, radius, spacing } from '@/theme';
 
 interface Tile {
@@ -12,9 +14,16 @@ interface Tile {
   text: string;
 }
 
-export function BuildSentenceExercise({ exercise, ttsLanguage, onResolved }: ExerciseProps) {
+export function BuildSentenceExercise({ exercise, ttsLanguage, script, onResolved }: ExerciseProps) {
   const { item } = exercise;
-  const correctTokens = useMemo(() => tokenize(item.text), [item.text]);
+  const rtl = containsArabic(item.text);
+  const correctTokens = useMemo(
+    () =>
+      item.segmented && item.segmented.length > 0
+        ? item.segmented
+        : tokenize(item.text, script),
+    [item.text, item.segmented, script]
+  );
 
   const [bank, setBank] = useState<Tile[]>(() =>
     shuffle(correctTokens.map((t, i) => ({ uid: `t${i}`, text: t })))
@@ -39,7 +48,7 @@ export function BuildSentenceExercise({ exercise, ttsLanguage, onResolved }: Exe
   const check = () => {
     if (done) return;
     attempts.current += 1;
-    if (tokensMatch(answer.map((t) => t.text), correctTokens)) {
+    if (tokensMatch(answer.map((t) => t.text), correctTokens, script)) {
       setDone(true);
       const quality = attempts.current === 1 ? 5 : 3;
       setTimeout(() => onResolved(quality), 600);
@@ -57,20 +66,23 @@ export function BuildSentenceExercise({ exercise, ttsLanguage, onResolved }: Exe
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.translation}>{item.translation}</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.translation}>{item.translation}</Text>
+          <Transliteration text={item.romanization} style={styles.translationHint} />
+        </View>
         <Pressable onPress={() => playItemAudio(item, ttsLanguage)} hitSlop={8}>
           <Text style={styles.speaker}>🔊</Text>
         </Pressable>
       </View>
 
-      <View style={[styles.answerBox, wrong && styles.answerBoxWrong]}>
+      <View style={[styles.answerBox, wrong && styles.answerBoxWrong, rtl && { flexDirection: 'row-reverse' }]}>
         {answer.length === 0 ? (
           <Text style={styles.placeholder}>Tap the words to build the phrase</Text>
         ) : (
           answer.map((tile) => (
             <Pressable key={tile.uid} onPress={() => removeTile(tile)}>
               <View style={styles.answerTile}>
-                <Text style={styles.tileText}>{tile.text}</Text>
+                <Text style={[styles.tileText, rtlTextStyle(rtl)]}>{tile.text}</Text>
               </View>
             </Pressable>
           ))
@@ -81,7 +93,7 @@ export function BuildSentenceExercise({ exercise, ttsLanguage, onResolved }: Exe
         {bank.map((tile) => (
           <Pressable key={tile.uid} onPress={() => addTile(tile)} disabled={done}>
             <View style={styles.bankTile}>
-              <Text style={styles.tileText}>{tile.text}</Text>
+              <Text style={[styles.tileText, rtlTextStyle(rtl)]}>{tile.text}</Text>
             </View>
           </Pressable>
         ))}
@@ -118,6 +130,13 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     fontWeight: '600',
     flex: 1,
+  },
+  translationHint: {
+    textAlign: 'left',
+    marginTop: 2,
+    fontSize: fontSize.sm,
+    fontWeight: '500',
+    color: colors.textFaint,
   },
   speaker: {
     fontSize: 28,

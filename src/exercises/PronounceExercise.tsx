@@ -6,9 +6,11 @@ import { PrimaryButton } from '@/components/ui';
 import { playItemAudio } from '@/audio/player';
 import { useSpeechRecognition } from '@/audio/useSpeechRecognition';
 import { phrasesMatch } from '@/utils/text';
+import { containsArabic, rtlTextStyle } from '@/utils/rtl';
+import { Transliteration } from '@/components/Transliteration';
 import { colors, fontSize, radius, spacing } from '@/theme';
 
-export function PronounceExercise({ exercise, ttsLanguage, speechLocale, onResolved }: ExerciseProps) {
+export function PronounceExercise({ exercise, ttsLanguage, speechLocale, script, onResolved }: ExerciseProps) {
   const { item } = exercise;
   const { listening, transcript, error, available, start } = useSpeechRecognition(speechLocale);
   const [feedback, setFeedback] = useState<'idle' | 'correct' | 'wrong'>('idle');
@@ -26,7 +28,7 @@ export function PronounceExercise({ exercise, ttsLanguage, speechLocale, onResol
     setBusy(false);
     if (done.current) return;
 
-    if (result && phrasesMatch(item.text, result)) {
+    if (result && phrasesMatch(item.text, result, script)) {
       done.current = true;
       setFeedback('correct');
       const quality = attempts.current === 1 ? 5 : 3;
@@ -48,7 +50,8 @@ export function PronounceExercise({ exercise, ttsLanguage, speechLocale, onResol
     <View style={styles.container}>
       <View style={styles.prompt}>
         <Visual item={item} size={150} />
-        <Text style={styles.word}>{item.text}</Text>
+        <Text style={[styles.word, rtlTextStyle(containsArabic(item.text))]}>{item.text}</Text>
+        <Transliteration text={item.romanization} />
       </View>
 
       <View style={styles.controls}>

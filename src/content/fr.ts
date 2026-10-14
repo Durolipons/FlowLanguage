@@ -7,6 +7,9 @@ export const frPack: LanguagePack = {
   flag: '🇫🇷',
   speechLocale: 'fr-FR',
   ttsLanguage: 'fr-FR',
+  script: 'latin',
+  direction: 'ltr',
+  romanizationScheme: 'none',
   items: {
     // Salutations
     'fr-bonjour': { id: 'fr-bonjour', text: 'bonjour', translation: 'hello / good day', emoji: '👋' },

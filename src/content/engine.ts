@@ -1,4 +1,4 @@
-import type { ExerciseInstance, ExerciseType, LanguagePack, Lesson, LexicalItem } from './schema';
+import type { ExerciseInstance, ExerciseType, LanguagePack, Lesson, LexicalItem, Script } from './schema';
 
 export function shuffle<T>(arr: readonly T[]): T[] {
   const a = [...arr];
@@ -13,7 +13,11 @@ function hasVisual(item: LexicalItem): boolean {
   return Boolean(item.image || item.emoji);
 }
 
-function isPhrase(item: LexicalItem): boolean {
+function isPhrase(item: LexicalItem, script: Script): boolean {
+  if (script === 'cjk') {
+    // No spaces in CJK: treat any multi-character item as a phrase.
+    return Array.from(item.text).filter((ch) => /\S/.test(ch)).length > 1;
+  }
   return item.text.trim().split(/\s+/).filter(Boolean).length > 1;
 }
 
@@ -99,7 +103,7 @@ export function generateExercises(lesson: Lesson, pack: LanguagePack): ExerciseI
     if (hasVisual(item)) types.push('listen_match');
     if (hasVisual(item)) types.push(i % 2 === 0 ? 'text_to_image' : 'image_to_text');
     types.push('pronounce');
-    if (isPhrase(item)) types.push('build_sentence');
+    if (isPhrase(item, pack.script)) types.push('build_sentence');
     types.forEach((type, ti) => {
       instances.push(makeInstance(`${lesson.id}-${id}-${ti}`, type, item, pool));
     });

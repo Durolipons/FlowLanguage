@@ -1,17 +1,28 @@
-import type { Dialogue, LanguagePack, Lesson, LexicalItem } from './schema';
+import type { Dialogue, Direction, LanguagePack, Lesson, LexicalItem, Script } from './schema';
 import { generateExercises } from './engine';
 import { esPack } from './es';
 import { frPack } from './fr';
 import { plPack } from './pl';
+import { arPack } from './ar';
 import { dialogues } from './dialogues';
 
 /** Register every available language pack here. */
-export const packs: LanguagePack[] = [esPack, frPack, plPack];
+export const packs: LanguagePack[] = [esPack, frPack, plPack, arPack];
 
 export const defaultLanguageCode = packs[0].code;
 
 export function getPack(code: string): LanguagePack | undefined {
   return packs.find((p) => p.code === code);
+}
+
+/** Script of a pack (defaults to Latin for unknown codes). */
+export function getScript(code: string): Script {
+  return getPack(code)?.script ?? 'latin';
+}
+
+/** Text direction of a pack (defaults to LTR). */
+export function getDirection(code: string): Direction {
+  return getPack(code)?.direction ?? 'ltr';
 }
 
 export function requirePack(code: string): LanguagePack {

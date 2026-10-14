@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import type { ExerciseInstance } from '@/content';
+import type { ExerciseInstance, Script } from '@/content';
 import { ExerciseView } from '@/exercises/ExerciseView';
 import { ProgressBar } from '@/components/ui';
 import { recordItemResult } from '@/db/progress';
@@ -12,6 +12,7 @@ interface Props {
   language: string;
   ttsLanguage: string;
   speechLocale: string;
+  script: Script;
   onComplete: (score: number, total: number) => void;
   onExit?: () => void;
 }
@@ -21,6 +22,7 @@ export function ExercisePlayer({
   language,
   ttsLanguage,
   speechLocale,
+  script,
   onComplete,
   onExit,
 }: Props) {
@@ -75,6 +77,7 @@ export function ExercisePlayer({
           exercise={current}
           ttsLanguage={ttsLanguage}
           speechLocale={speechLocale}
+          script={script}
           onResolved={handleResolved}
         />
       </View>

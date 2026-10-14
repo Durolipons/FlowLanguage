@@ -7,6 +7,9 @@ export const plPack: LanguagePack = {
   flag: '🇵🇱',
   speechLocale: 'pl-PL',
   ttsLanguage: 'pl-PL',
+  script: 'latin',
+  direction: 'ltr',
+  romanizationScheme: 'none',
   items: {
     // Greetings
     'pl-dzien-dobry': { id: 'pl-dzien-dobry', text: 'dzień dobry', translation: 'good day', emoji: '🌅' },

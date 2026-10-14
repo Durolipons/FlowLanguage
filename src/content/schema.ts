@@ -14,6 +14,15 @@ export type ExerciseType =
   | 'pronounce' // hear it, then repeat it aloud (speech recognition)
   | 'build_sentence'; // arrange word tiles into the correct phrase
 
+/** Writing system the pack's target text uses. Drives normalization + tokenization. */
+export type Script = 'latin' | 'arabic' | 'cjk';
+
+/** Text direction for the pack's target script. */
+export type Direction = 'ltr' | 'rtl';
+
+/** How the pack's pronunciation aid is romanized (empty for Latin). */
+export type RomanizationScheme = 'none' | 'pinyin' | 'jyutping' | 'transliteration';
+
 /** A single word or phrase the learner studies. */
 export interface LexicalItem {
   id: string;
@@ -27,6 +36,10 @@ export interface LexicalItem {
   image?: string;
   /** Optional recorded audio asset path (falls back to TTS when absent). */
   audio?: string;
+  /** Optional romanized pronunciation (Pinyin, Jyutping, transliteration). */
+  romanization?: string;
+  /** Optional explicit word segmentation for CJK (used by build_sentence). */
+  segmented?: string[];
 }
 
 /** An explicit step in a lesson (optional; lessons can auto-generate instead). */
@@ -64,6 +77,12 @@ export interface LanguagePack {
   speechLocale: string;
   /** Language tag for text-to-speech (e.g. "es-ES"). */
   ttsLanguage: string;
+  /** Writing system the target text uses (drives normalization/tokenization). */
+  script: Script;
+  /** Text direction for the target script (Arabic is RTL). */
+  direction: Direction;
+  /** How pronunciation is romanized for this pack (Pinyin, Jyutping, etc.). */
+  romanizationScheme: RomanizationScheme;
   /** All lexical items keyed by id. */
   items: Record<string, LexicalItem>;
   units: Unit[];

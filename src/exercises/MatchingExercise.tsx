@@ -4,6 +4,8 @@ import { ChoiceButton, type CardState, type ExerciseProps } from './common';
 import { Visual } from '@/components/Visual';
 import { PrimaryButton } from '@/components/ui';
 import { playItemAudio } from '@/audio/player';
+import { containsArabic, rtlTextStyle } from '@/utils/rtl';
+import { Transliteration } from '@/components/Transliteration';
 import { colors, fontSize, spacing } from '@/theme';
 
 type Variant = 'listen_match' | 'text_to_image' | 'image_to_text';
@@ -59,7 +61,8 @@ export function MatchingExercise({
         )}
         {variant === 'text_to_image' && (
           <>
-            <Text style={styles.bigText}>{item.text}</Text>
+            <Text style={[styles.bigText, rtlTextStyle(containsArabic(item.text))]}>{item.text}</Text>
+            <Transliteration text={item.romanization} />
             <Text style={styles.hint}>Tap the matching image</Text>
           </>
         )}
