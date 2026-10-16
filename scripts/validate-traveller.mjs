@@ -36,6 +36,7 @@ const LANGS = [
   ['traveller-fr.ts', 'frTravellerPhrases', 'fr'],
   ['traveller-pl.ts', 'plTravellerPhrases', 'pl'],
   ['traveller-ar.ts', 'arTravellerPhrases', 'ar'],
+  ['traveller-cs.ts', 'csTravellerPhrases', 'cs'],
 ];
 
 for (const [file, varName, lang] of LANGS) {

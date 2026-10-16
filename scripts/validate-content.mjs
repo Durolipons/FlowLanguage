@@ -21,6 +21,8 @@ for (const [file, name] of [
   ['fr.ts', 'frPack'],
   ['pl.ts', 'plPack'],
   ['ar.ts', 'arPack'],
+  ['cs.ts', 'csPack'],
+  ['nub.ts', 'nubPack'],
 ]) {
   const pack = loadPack(file, name);
   const itemKeys = Object.keys(pack.items);
@@ -58,6 +60,8 @@ for (const [file, name] of [
   ['fr.ts', 'frPack'],
   ['pl.ts', 'plPack'],
   ['ar.ts', 'arPack'],
+  ['cs.ts', 'csPack'],
+  ['nub.ts', 'nubPack'],
 ]) {
   const pack = loadPack(file, name);
   const ids = Object.values(pack.items).map((i) => i.id);

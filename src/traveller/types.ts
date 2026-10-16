@@ -1,7 +1,7 @@
 /** Traveller-mode types. Entirely offline: no network, no free MT. */
 
 /** Target language pack codes that have curated traveller phrases. */
-export type TravLang = 'es' | 'fr' | 'pl' | 'ar';
+export type TravLang = 'es' | 'fr' | 'pl' | 'ar' | 'cs';
 
 export type TravCategoryCode =
   | 'airport'

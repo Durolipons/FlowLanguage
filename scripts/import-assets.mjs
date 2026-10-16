@@ -33,11 +33,11 @@ function loadPack(file, varName) {
   src = src.replace(new RegExp(`export const ${varName}: LanguagePack =`), 'return');
   return new Function(src)();
 }
-const packs = [loadPack('es.ts', 'esPack'), loadPack('fr.ts', 'frPack')];
+const packs = [loadPack('es.ts', 'esPack'), loadPack('fr.ts', 'frPack'), loadPack('pl.ts', 'plPack'), loadPack('ar.ts', 'arPack'), loadPack('cs.ts', 'csPack'), loadPack('nub.ts', 'nubPack')];
 const itemIndex = new Map();
 for (const p of packs) {
   for (const item of Object.values(p.items)) {
-    itemIndex.set(item.id, { prefix: p.code, slug: item.id.replace(/^[a-z]{2}-/, '') });
+    itemIndex.set(item.id, { prefix: p.code, slug: item.id.replace(/^[a-z]+-/, '') });
   }
 }
 
@@ -137,14 +137,29 @@ function regenerateBundled(kind) {
   const base = join(assetsDir, kind);
   const exts = kind === 'images' ? ['.png', '.jpg', '.jpeg', '.webp'] : ['.mp3', '.wav', '.m4a', '.aac', '.ogg'];
   const lines = [];
-  for (const p of packs) {
-    const dir = join(base, p.code);
-    if (!existsSync(dir)) continue;
-    const files = readdirSync(dir);
-    for (const item of Object.values(p.items)) {
-      const slug = item.id.replace(/^[a-z]{2}-/, '');
-      const match = files.find((f) => exts.some((e) => f === slug + e));
-      if (match) lines.push(`  '${item.id}': require('../../../assets/${kind}/${p.code}/${match}'),`);
+  if (kind === 'images') {
+    // Shared, concept-keyed images: ONE file per English concept, reused by every
+    // language (es-manzana / fr-pomme / pl-jablko -> assets/images/apple.jpg).
+    const slugify = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const sharedFiles = existsSync(base) ? readdirSync(base).filter((f) => exts.some((e) => f.toLowerCase().endsWith(e))) : [];
+    for (const p of packs) {
+      for (const item of Object.values(p.items)) {
+        const concept = item.imageKey ?? slugify(item.translation);
+        const match = exts.map((e) => concept + e).find((name) => sharedFiles.includes(name));
+        if (match) lines.push(`  '${item.id}': require('../../../assets/images/${match}'),`);
+      }
+    }
+  } else {
+    // Audio is language-specific: one file per item under assets/audio/<lang>/.
+    for (const p of packs) {
+      const dir = join(base, p.code);
+      if (!existsSync(dir)) continue;
+      const files = readdirSync(dir);
+      for (const item of Object.values(p.items)) {
+        const slug = item.id.replace(/^[a-z]+-/, '');
+        const match = files.find((f) => exts.some((e) => f === slug + e));
+        if (match) lines.push(`  '${item.id}': require('../../../assets/${kind}/${p.code}/${match}'),`);
+      }
     }
   }
   const path = join(assetsSrcDir, kind === 'images' ? 'imageAssets.ts' : 'audioAssets.ts');

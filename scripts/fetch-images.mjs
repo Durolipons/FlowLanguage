@@ -120,14 +120,19 @@ function loadPack(file, varName) {
   return new Function(src)();
 }
 function packFor(lang) {
-  const map = { es: ['es.ts', 'esPack'], fr: ['fr.ts', 'frPack'], pl: ['pl.ts', 'plPack'] };
+  const map = { es: ['es.ts', 'esPack'], fr: ['fr.ts', 'frPack'], pl: ['pl.ts', 'plPack'], ar: ['ar.ts', 'arPack'], cs: ['cs.ts', 'csPack'], fia: ['nub.ts', 'nubPack'] };
   if (!map[lang]) throw new Error(`No pack for language '${lang}'`);
   return loadPack(map[lang][0], map[lang][1]);
 }
-function hasImage(lang, slug) {
-  const dir = join(assetsDir, 'images', lang);
-  if (!existsSync(dir)) return false;
-  return readdirSync(dir).some((f) => f.startsWith(slug + '.'));
+const slugify = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+/** Shared image concept for an item (falls back to a slug of its translation). */
+function conceptFor(item) {
+  return item.imageKey ?? slugify(item.translation || item.text);
+}
+const IMG_EXTS = ['.png', '.jpg', '.jpeg', '.webp'];
+/** True if a shared concept image already exists (any extension) — reused across languages. */
+function hasShared(concept) {
+  return IMG_EXTS.some((e) => existsSync(join(assetsDir, 'images', concept + e)));
 }
 function recordAttribution(entries) {
   const path = join(assetsDir, 'images', 'ATTRIBUTION.json');
@@ -183,13 +188,13 @@ async function main() {
         console.error(`Item '${args.id}' not found in the ${lang} pack.`);
         process.exit(1);
       }
-      const slug = item.id.replace(/^[a-z]{2}-/, '');
-      tasks.push({ lang, slug, query: args.query || item.translation || item.text, outBase: join(assetsDir, 'images', lang, slug) });
+      const concept = conceptFor(item);
+      tasks.push({ lang, slug: concept, query: args.query || item.translation || item.text, outBase: join(assetsDir, 'images', concept) });
     } else if (args.missing) {
       for (const item of Object.values(pack.items)) {
-        const slug = item.id.replace(/^[a-z]{2}-/, '');
-        if (!force && hasImage(lang, slug)) continue;
-        tasks.push({ lang, slug, query: item.translation || item.text, outBase: join(assetsDir, 'images', lang, slug) });
+        const concept = conceptFor(item);
+        if (!force && hasShared(concept)) continue;
+        tasks.push({ lang, slug: concept, query: item.translation || item.text, outBase: join(assetsDir, 'images', concept) });
       }
     } else {
       console.error('Provide --id <itemId> or --missing (or use --out).');
@@ -204,7 +209,7 @@ async function main() {
   let fail = 0;
   let skip = 0;
   for (const t of toRun) {
-    if (!args.out && !force && hasImage(t.lang, t.slug)) {
+    if (!args.out && !force && hasShared(t.slug)) {
       skip++;
       continue;
     }
@@ -216,12 +221,12 @@ async function main() {
       continue;
     }
     const ext = extFrom(res.contentType, res.sourceUrl, '.jpg');
-    const dir = join(assetsDir, 'images', t.lang);
+    const dir = join(assetsDir, 'images');
     mkdirSync(dir, { recursive: true });
     for (const f of readdirSync(dir)) if (f.startsWith(t.slug + '.')) rmSync(join(dir, f));
     const outPath = `${t.outBase}${ext}`;
     writeFileSync(outPath, res.buf);
-    attrib.push({ lang: t.lang, slug: t.slug, query: t.query, file: `images/${t.lang}/${t.slug}${ext}`, source: res.source, creator: res.creator, license: res.license, sourceUrl: res.sourceUrl });
+    attrib.push({ lang: t.lang, slug: t.slug, query: t.query, file: `images/${t.slug}${ext}`, source: res.source, creator: res.creator, license: res.license, sourceUrl: res.sourceUrl });
     ok++;
     console.log(`    ok -> images/${t.lang}/${t.slug}${ext}  [${res.source}${res.license ? ', ' + res.license : ''}]`);
   }
