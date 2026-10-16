@@ -12,7 +12,8 @@ export type ExerciseType =
   | 'text_to_image' // see the word -> pick the matching image
   | 'image_to_text' // see the image -> pick the matching word
   | 'pronounce' // hear it, then repeat it aloud (speech recognition)
-  | 'build_sentence'; // arrange word tiles into the correct phrase
+  | 'build_sentence' // arrange word tiles into the correct phrase
+  | 'cloze'; // fill in the missing word of a sentence from a set of choices
 
 /** Writing system the pack's target text uses. Drives normalization + tokenization. */
 export type Script = 'latin' | 'arabic' | 'cjk';
@@ -40,6 +41,21 @@ export interface LexicalItem {
   romanization?: string;
   /** Optional explicit word segmentation for CJK (used by build_sentence). */
   segmented?: string[];
+  /**
+   * Shared image "concept" key. When set (or derived from `translation`), all
+   * languages whose item maps to the same concept reuse ONE bundled image
+   * (e.g. es-manzana / fr-pomme / pl-jablko -> "apple"). Defaults to a slug of
+   * `translation`; set explicitly only to resolve collisions (e.g. "short").
+   */
+  imageKey?: string;
+  /**
+   * For sentence items: the word inside `text` to blank out for the
+   * fill-in-the-blank ("cloze") exercise. When set, the engine generates a
+   * `cloze` exercise for this item instead of image-matching.
+   */
+  answer?: string;
+  /** Optional curated wrong choices for the cloze exercise; the engine fills distractors from the pack when omitted. */
+  choices?: string[];
 }
 
 /** An explicit step in a lesson (optional; lessons can auto-generate instead). */
@@ -95,6 +111,8 @@ export interface ExerciseInstance {
   item: LexicalItem;
   /** For matching types: the target + distractors, already shuffled. */
   choices: LexicalItem[];
+  /** For `cloze`: the sentence, the correct word, and the shuffled word choices. */
+  cloze?: { sentence: string; answer: string; choices: string[] };
 }
 
 /** A single line in a dialogue, spoken by one speaker. */

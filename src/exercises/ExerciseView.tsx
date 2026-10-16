@@ -3,6 +3,7 @@ import type { ExerciseProps } from './common';
 import { MatchingExercise } from './MatchingExercise';
 import { PronounceExercise } from './PronounceExercise';
 import { BuildSentenceExercise } from './BuildSentenceExercise';
+import { ClozeExercise } from './ClozeExercise';
 
 /** Renders the correct exercise component for a given instance. */
 export function ExerciseView(props: ExerciseProps) {
@@ -18,6 +19,8 @@ export function ExerciseView(props: ExerciseProps) {
       return <PronounceExercise {...props} />;
     case 'build_sentence':
       return <BuildSentenceExercise {...props} />;
+    case 'cloze':
+      return <ClozeExercise {...props} />;
     default:
       return null;
   }
