@@ -22,8 +22,9 @@ audio and context — no translation in the lessons.
 - **Daily streak + goal + XP** — built for a morning routine
 - **Spaced-repetition review** queue (simplified SM-2) so words resurface at
   the right time
-- **Multiple languages**, switchable at runtime (Spanish, French, Polish, and
-  Arabic — including RTL layout + transliteration)
+- **Multiple languages**, switchable at runtime (Spanish, French, Polish,
+  Arabic — including RTL layout + transliteration — Czech, and a
+  low-resource Nobiin (Nubian) starter)
 - **🧳 Traveller Mode** — an offline travel companion (phrasebook, matched-phrase
   translate, speak, trip decks, SM-2 review, and a one-tap emergency screen)
 
@@ -64,7 +65,7 @@ app/                     # screens (Expo Router, file-based routing)
 src/
   content/               # language packs (data-driven) + exercise engine
     schema.ts            # content types
-    es.ts, fr.ts, pl.ts, ar.ts   # the actual vocabulary for each language
+    es.ts, fr.ts, pl.ts, ar.ts, cs.ts, nub.ts   # the actual vocabulary for each language
     traveller*.ts        # curated Traveller-Mode phrases per language
     engine.ts            # turns lesson items into exercise instances
   exercises/             # the 5 exercise components + router
