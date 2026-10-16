@@ -6,10 +6,12 @@ import { plPack } from './pl';
 import { arPack } from './ar';
 import { csPack } from './cs';
 import { nubPack } from './nub';
+import { enPack } from './en';
+import { dePack } from './de';
 import { dialogues } from './dialogues';
 
 /** Register every available language pack here. */
-export const packs: LanguagePack[] = [esPack, frPack, plPack, arPack, csPack, nubPack];
+export const packs: LanguagePack[] = [esPack, frPack, plPack, arPack, csPack, nubPack, enPack, dePack];
 
 export const defaultLanguageCode = packs[0].code;
 
