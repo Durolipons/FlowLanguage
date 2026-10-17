@@ -6,9 +6,9 @@
     "orientation": "portrait",
     "scheme": "lingua",
     "userInterfaceStyle": "automatic",
-    "icon": "./assets/icon.svg",
+    "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.svg",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#4f46e5"
     },
@@ -25,9 +25,9 @@
       "permissions": [
         "android.permission.RECORD_AUDIO"
       ],
-      "icon": "./assets/icon.svg",
+      "icon": "./assets/icon.png",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.svg",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#4f46e5"
       }
     },
