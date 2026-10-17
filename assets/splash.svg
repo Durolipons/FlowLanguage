@@ -1,11 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:1" />
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
     </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2"/>
+      <stop offset="70%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
   </defs>
-  <rect width="1024" height="1024" fill="url(#grad)" />
-  <circle cx="512" cy="420" r="160" fill="white" opacity="0.15"/>
-  <path d="M320 640 c-40 0 -72 32 -72 72 0 40 32 72 72 72 40 0 72 -32 72 -72 0 -40 -32 -72 -72 -72 z M704 640 c-40 0 -72 32 -72 72 0 40 32 72 72 72 40 0 72 -32 72 -72 0 -40 -32 -72 -72 -72 z M512 840 c-60 0 -108 48 -108 108 0 60 48 108 108 108 60 0 108 -48 108 -108 0 -60 -48 -108 -108 -108 z" fill="white" opacity="0.9"/>
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="url(#bgGrad)"/>
+  <circle cx="512" cy="512" r="560" fill="url(#glow)"/>
+  
+  <!-- Centered icon (smaller version) -->
+  <g transform="translate(212, 212) scale(0.6)">
+    <path d="M220 640 c-35 0 -63 28 -63 63 v110 c0 35 28 63 63 63 h440 c35 0 63 -28 63 -63 v-110 c0 -35 -28 -63 -63 -63 h-440 z" fill="white"/>
+    <path d="M440 753 l-40 60 l40 20 z" fill="white"/>
+    <text x="440" y="540" font-family="Arial, sans-serif" font-size="130" font-weight="800" fill="#4f46e5" text-anchor="middle">L</text>
+    <text x="440" y="700" font-family="Arial, sans-serif" font-size="70" font-weight="600" fill="#4f46e5" text-anchor="middle">anguage</text>
+    <circle cx="720" cy="340" r="50" fill="white" opacity="0.3"/>
+    <circle cx="880" cy="420" r="30" fill="white" opacity="0.2"/>
+    <circle cx="260" cy="300" r="40" fill="white" opacity="0.25"/>
+    <circle cx="180" cy="780" r="35" fill="white" opacity="0.15"/>
+  </g>
+  
+  <!-- App name -->
+  <text x="512" y="820" font-family="Arial, sans-serif" font-size="56" font-weight="700" fill="white" text-anchor="middle" letter-spacing="2">Lingua</text>
+  <text x="512" y="870" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="white" text-anchor="middle" opacity="0.8">Language Learning</text>
 </svg>

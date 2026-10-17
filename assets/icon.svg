@@ -1,13 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:1" />
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
     </linearGradient>
+    <linearGradient id="bubbleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#e5e7eb" stop-opacity="0.9"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="25"/>
+      <feOffset dx="0" dy="18" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.25"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
-  <rect width="1024" height="1024" rx="220" fill="url(#grad)" />
-  <path d="M320 440 c-40 0 -72 32 -72 72 0 40 32 72 72 72 40 0 72 -32 72 -72 0 -40 -32 -72 -72 -72 z M704 440 c-40 0 -72 32 -72 72 0 40 32 72 72 72 40 0 72 -32 72 -72 0 -40 -32 -72 -72 -72 z M512 640 c-60 0 -108 48 -108 108 0 60 48 108 108 108 60 0 108 -48 108 -108 0 -60 -48 -108 -108 -108 z" fill="white"/>
-  <circle cx="320" cy="340" r="28" fill="white" opacity="0.9"/>
-  <circle cx="704" cy="340" r="28" fill="white" opacity="0.9"/>
-  <circle cx="512" cy="540" r="40" fill="white" opacity="0.9"/>
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="260" fill="url(#bgGrad)"/>
+  
+  <!-- Speech bubble (main icon shape) -->
+  <path d="M220 640 c-35 0 -63 28 -63 63 v110 c0 35 28 63 63 63 h440 c35 0 63 -28 63 -63 v-110 c0 -35 -28 -63 -63 -63 h-440 z" fill="url(#bubbleGrad)" filter="url(#shadow)"/>
+  <path d="M440 753 l-40 60 l40 20 z" fill="url(#bubbleGrad)" filter="url(#shadow)"/>
+  
+  <!-- Language characters inside bubble -->
+  <text x="440" y="540" font-family="Arial, sans-serif" font-size="130" font-weight="800" fill="#4f46e5" text-anchor="middle">L</text>
+  <text x="440" y="700" font-family="Arial, sans-serif" font-size="70" font-weight="600" fill="#0ea5e9" text-anchor="middle">anguage</text>
+  
+  <!-- Decorative accent circles -->
+  <circle cx="720" cy="340" r="50" fill="white" opacity="0.15"/>
+  <circle cx="880" cy="420" r="30" fill="white" opacity="0.1"/>
+  <circle cx="260" cy="300" r="40" fill="white" opacity="0.12"/>
+  <circle cx="180" cy="780" r="35" fill="white" opacity="0.08"/>
 </svg>
