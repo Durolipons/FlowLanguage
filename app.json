@@ -6,6 +6,12 @@
     "orientation": "portrait",
     "scheme": "lingua",
     "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.svg",
+    "splash": {
+      "image": "./assets/splash.svg",
+      "resizeMode": "contain",
+      "backgroundColor": "#4f46e5"
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.durolipons.lingua",
@@ -18,11 +24,28 @@
       "package": "com.durolipons.lingua",
       "permissions": [
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "icon": "./assets/icon.svg",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.svg",
+        "backgroundColor": "#4f46e5"
+      }
     },
     "web": {
       "bundler": "metro",
-      "output": "single"
+      "output": "single",
+      "favicon": "./assets/favicon.svg",
+      "outputManifest": true,
+      "config": {
+        "pwa": {
+          "start_url": "/",
+          "display": "standalone",
+          "background_color": "#4f46e5",
+          "theme_color": "#4f46e5",
+          "orientation": "portrait",
+          "scope": "/"
+        }
+      }
     },
     "plugins": [
       "expo-router",

@@ -1,0 +1,24 @@
+{
+  "cli": {
+    "version": ">=57.0.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "channel": "production",
+      "autoIncrement": {
+        "enabled": true,
+        "platform": "ios"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
